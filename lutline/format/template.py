@@ -2,11 +2,6 @@
 #-*- coding:utf-8 -*-
 
 
-TEMPLATE = """\
-#!/usr/bin/env python
-#-*- coding:utf-8 -*-
-
-
 import sys
 
 
@@ -15,8 +10,8 @@ USAGE = 'usage: {{usage}}'
 
 def parse(argv=sys.argv[1:]):
     lut = "{{lut}}"
-    lst = lambda s: [e.split(";") for e in s.split(":")] if ";" in s else s
     getline = lambda l: l[:None if -1 == l.find("_") else l.find("_")]
+    lst = lambda s: [e.split(";") for e in s.split(":")] if ";" in s else s
     expand = lambda s: None if s == '' else lst(s)
     emb, exs, imp = (expand(e) for e in getline(lut).split(","))
     forward = lambda l: None if -1 == l.find("_") else l[l.find("_") + 1:]
@@ -35,4 +30,3 @@ def parse(argv=sys.argv[1:]):
 
 if __name__ == "__main__":
     print parse()
-"""
