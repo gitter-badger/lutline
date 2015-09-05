@@ -20,3 +20,12 @@ Test lutline using:
 ```
 $ python -m tests
 ```
+
+## Deployment
+
+Deploy to PyPI with:
+
+```
+$ python setup.py sdist bdist_wheel
+$ twine upload dist/*
+```
