@@ -29,7 +29,7 @@ class __LUT:
         return [(emb, exp, imp) for rid, emb, exp, imp in self.table]
 
 
-def generate_lut(leafs):
+def generate(leafs):
     lut = __LUT()
     queue = [lut.root(leafs)]
     explicitize = lambda t, l: l if t == u'cmd' else ('-' + l)

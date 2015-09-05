@@ -2,7 +2,7 @@
 #-*- coding:utf-8 -*-
 
 
-__PYTHON = """\
+TEMPLATE = """\
 #!/usr/bin/env python
 #-*- coding:utf-8 -*-
 
@@ -36,19 +36,3 @@ def parse(argv=sys.argv[1:]):
 if __name__ == "__main__":
     print parse()
 """
-
-
-def export_lut(lut):
-    nonenize = lambda o: "" if o == None else unicode(o)
-    elementize = lambda e: ";".join(nonenize(lii) for lii in e)
-    listify = lambda l: ":".join(elementize(li) for li in l) if l else ""
-    rst = "_".join(
-        ",".join([listify(emb), listify(exp), nonenize(imp)])
-        for emb, exp, imp in lut)
-    return rst
-
-
-def export(usage, lut, language="python"):
-    lut_str = export_lut(lut)
-    rst = __PYTHON.replace("{{usage}}", usage)
-    return rst.replace("{{lut}}", lut_str)

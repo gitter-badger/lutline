@@ -22,7 +22,7 @@ def __expand(key, body):
         exit("ERROR in SPEC")
 
 
-def all_embodiments(root):
+def process(root):
     __flag = lambda e: type(e) == list and type(e[1]) == list
     queue = [root]
     leafs = []

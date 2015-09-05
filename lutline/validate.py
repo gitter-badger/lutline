@@ -9,5 +9,6 @@ def __check_uniques(embodiments):
         exit("Ambiguous CLI specification.")
 
 
-def validate_embodiments(embodiments):
+def process(embodiments):
     __check_uniques(embodiments)
+    # TODO: check that all pairs are not Ambiguous
