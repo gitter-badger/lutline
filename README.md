@@ -21,7 +21,7 @@ Test lutline using:
 $ python -m tests
 ```
 
-## Deployment
+### Deployment
 
 Deploy to PyPI with:
 
