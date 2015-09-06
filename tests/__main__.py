@@ -9,4 +9,10 @@ import importlib
 
 for _, name, _ in pkgutil.iter_modules(['tests']):
     if name != "__main__":
-        importlib.import_module("." + name, "tests").run()
+        try:
+            importlib.import_module("." + name, "tests").run()
+        except Exception as e:
+            print name, "NOK!", e
+            break
+        else:
+            print name, "OK"
