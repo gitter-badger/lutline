@@ -5,16 +5,16 @@
 import sys
 
 
-USAGE = 'usage: {{usage}}'
+USAGE = """{{usage}}"""
 
 
 def parse(argv=sys.argv[1:]):
-    lut = "{{lut}}"
-    getline = lambda l: l[:None if -1 == l.find("_") else l.find("_")]
+    lut = ("{{lut}}")
+    getline = lambda l: l[:None if -1 == l.find("|") else l.find("|")]
     lst = lambda s: [e.split(";") for e in s.split(":")] if ";" in s else s
     expand = lambda s: None if s == '' else lst(s)
     emb, exs, imp = (expand(e) for e in getline(lut).split(","))
-    forward = lambda l: None if -1 == l.find("_") else l[l.find("_") + 1:]
+    forward = lambda l: None if -1 == l.find("|") else l[l.find("|") + 1:]
     for arg in argv:
         h = next((e1 for e0, e1 in exs if arg == e0), None) if exs else None
         if not (h or imp):
