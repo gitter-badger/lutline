@@ -22,6 +22,7 @@ def run():
         f.write(rst)
     temp = importlib.import_module("temp", ".")
 
+    # We are about to try 780 argv combinations. No problem
     args = [
         [],
         ["-f"],
