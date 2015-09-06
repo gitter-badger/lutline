@@ -1,19 +1,8 @@
 # Tutorial - A basic CLI for a command-line application
 
-The following tutorial is based on the following assumptions:
-  - a python developer wants to implement a command-line interface (CLI) for an
-    application he is developing `./app [-f] <fin>`;
-  - the developer has a file in his project called `spec.py` with a
-    specification of the CLI he wants to implement;
-  - the developer wants to generate a module called `cli.py` based on `spec.py`,
-    allowing him to do something like `import cli; args = cli.parse()` in an
-    initial function of his application.
+*Lutline* is mainly used to generate a `cli.py` file, comprising a CLI parser.
 
-In the above-mentioned scenario, the developer could easily implement his
-application in another programming language, for example C or Ruby.
-
-The following description, describes how *lutline* can be used to generate the
-`cli.py` file.
+###### Summary
 
 ```
 $ virtualenv venv
@@ -32,6 +21,18 @@ cli.py  main.py  spec.py
 (venv)$ deactivate
 $ rm -r venv
 ```
+
+The following tutorial is based on the following assumptions:
+  - a python developer wants to implement a command-line interface (CLI) for an
+    application he is developing `./app [-f] <fin>`;
+  - the developer has a file in his project called `spec.py` with a
+    specification of the CLI he wants to implement;
+  - the developer wants to generate a module called `cli.py` based on `spec.py`,
+    allowing him to do something like `import cli; args = cli.parse()` in an
+    initial function of his application.
+
+In the above-mentioned scenario, the developer could easily implement his
+application in another programming language, for example C or Ruby.
 
 ## Installation
 
