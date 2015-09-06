@@ -32,7 +32,7 @@ class __LUT:
 def generate(leafs):
     lut = __LUT()
     queue = [lut.root(leafs)]
-    explicitize = lambda t, l: l if t == u'cmd' else ('-' + l)
+    explicitize = lambda t, l: l if t == u'c' else ('-' + l)
     while queue:
         row_id, argv_idx, possible_leafs = queue.pop(-1)
         embodiment = next((l for l in possible_leafs if len(l) == argv_idx), None)
