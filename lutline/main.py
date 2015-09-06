@@ -5,10 +5,13 @@
 import sys
 
 
-USAGE = """usage: lutline [-l <language>] -f <spec_file> [-o <output_file>]
-       lutline dump -f <spec_file>
+USAGE = """usage: lutline [-l <language>] [-o <output_file>] <spec_file>
+       lutline dump <spec_file>
 
-Paramaters:
+Commands:
+    dump              Prints out the pattern parsed from the spec_file.
+
+Options:
     -l <language>     Sets the output programming language. Default is 'py'.
     -f <spec_file>    Sets the input file with the specification.
     -o <output_file>  Sets the name of the output file to dump the parser code.
@@ -17,10 +20,9 @@ Paramaters:
 
 
 def cli(argv=sys.argv[1:]):
-    lut = (",-l;1:-f;2:dump;3,|,,8|,,4|,-f;1,|,,1|c;dump:f;f:a;spec_file,,|f;f:"
-           "a;spec_file,-o;1,|,,1|f;f:a;spec_file:f;o:a;output_file,,|,-f;1,|,,"
-           "1|f;l:a;language:f;f:a;spec_file,-o;1,|,,1|f;l:a;language:f;f:a;spe"
-           "c_file:f;o:a;output_file,,")
+    lut = (",-l;1:-o;2:dump;3,4|,,7|,,4|,,2|a;spec_file,,|c;dump:a;spec_file,,|"
+           ",,1|f;o:a;output_file:a;spec_file,,|,-o;1,2|,,2|f;l:a;language:a;sp"
+           "ec_file,,|,,1|f;l:a;language:f;o:a;output_file:a;spec_file,,")
     getline = lambda l: l[:None if -1 == l.find("|") else l.find("|")]
     lst = lambda s: [e.split(";") for e in s.split(":")] if ";" in s else s
     expand = lambda s: None if s == '' else lst(s)

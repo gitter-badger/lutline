@@ -807,8 +807,10 @@ def run():
         ["ola.txt", "ola.txt", "ola.txt", "ola.txt"],
     ]
 
+    count = 0
     rsts = []
     for arg in args:
+        count += 1
         try:
             assert type(temp.parse(arg)) == dict
         except:
@@ -818,6 +820,6 @@ def run():
     assert len(rsts) == 2
     assert ['ola.txt'] in rsts
     assert ['-f', 'ola.txt', 'ola.txt'] in rsts
-
+    print "tested", count, "possibilities",
     os.remove("temp.py")
     os.remove("temp.pyc")
