@@ -5,16 +5,27 @@
 import sys
 
 
-USAGE = 'usage: lutline [-l <language>]'
+USAGE = """usage: lutline [-l <language>] -f <spec_file> [-o <output_file>]
+       lutline dump -f <spec_file>
+
+Paramaters:
+    -l <language>     Sets the output programming language. Default is 'py'.
+    -f <spec_file>    Sets the input file with the specification.
+    -o <output_file>  Sets the name of the output file to dump the parser code.
+                      Default is 'cli.py'.
+"""
 
 
 def cli(argv=sys.argv[1:]):
-    lut = ",-l;1,_,,1_f;l:a;lanaguage,,"
-    getline = lambda l: l[:None if -1 == l.find("_") else l.find("_")]
+    lut = (",-l;1:-f;2:dump;3,|,,8|,,4|,-f;1,|,,1|c;dump:f;f:a;spec_file,,|f;f:"
+           "a;spec_file,-o;1,|,,1|f;f:a;spec_file:f;o:a;output_file,,|,-f;1,|,,"
+           "1|f;l:a;language:f;f:a;spec_file,-o;1,|,,1|f;l:a;language:f;f:a;spe"
+           "c_file:f;o:a;output_file,,")
+    getline = lambda l: l[:None if -1 == l.find("|") else l.find("|")]
     lst = lambda s: [e.split(";") for e in s.split(":")] if ";" in s else s
     expand = lambda s: None if s == '' else lst(s)
     emb, exs, imp = (expand(e) for e in getline(lut).split(","))
-    forward = lambda l: None if -1 == l.find("_") else l[l.find("_") + 1:]
+    forward = lambda l: None if -1 == l.find("|") else l[l.find("|") + 1:]
     for arg in argv:
         h = next((e1 for e0, e1 in exs if arg == e0), None) if exs else None
         if not (h or imp):
