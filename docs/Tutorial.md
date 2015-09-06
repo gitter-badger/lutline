@@ -34,6 +34,11 @@ The following tutorial is based on the following assumptions:
 In the above-mentioned scenario, the developer could easily implement his
 application in another programming language, for example C or Ruby.
 
+- [Installation](#installation)
+- [Generating a parser](#generating-a-parser)
+- [Using the parser](#using-the-parser)
+- [(optional) Detaching lutline from the project dependencies](#optional-detaching-lutline-from-the-project-dependencies)
+
 ## Installation
 
 First, the developer needs to make *lutline* available in a Python
