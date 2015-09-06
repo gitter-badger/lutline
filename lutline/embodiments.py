@@ -2,6 +2,7 @@
 #-*- coding:utf-8 -*-
 
 
+import json
 import itertools
 
 
@@ -23,6 +24,9 @@ def __expand(key, body):
 
 
 def process(root):
+    if type(root) != unicode:
+        root = json.dumps(root)
+    root = json.loads(root)
     __flag = lambda e: type(e) == list and type(e[1]) == list
     queue = [root]
     leafs = []
