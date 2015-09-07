@@ -19,7 +19,7 @@ setup(
     long_description=long_description,
     author="Filipe Funenga",
     author_email="fmafunenga@gmail.com",
-    url="https://github.com/ffunenga/lutline",
+    url="http://ffunenga.github.io/lutline",
     license='MIT',
     keywords='cli argv command-line interface arguments',
     classifiers=[
