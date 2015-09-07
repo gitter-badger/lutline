@@ -1,8 +1,6 @@
 # LUTLINE
 
-Provides a method of generating a look-up table (LUT) based on a CLI
-specification and a method of accessing said LUT when parsing an array
-of strings (in most programming languages, this array is known as "argv").
+Parse `argv` using a look-up table generated from your command-line interface specification.
 
 ## Install
 
