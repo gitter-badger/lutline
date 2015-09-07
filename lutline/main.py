@@ -3,7 +3,11 @@
 
 
 import sys
-import importlib
+
+import embodiments
+import validate
+import lut
+import format
 
 
 USAGE = """usage: lutline [-l <language>] [-o <output_file>] <spec_file>
@@ -42,14 +46,48 @@ def cli(argv=sys.argv[1:]):
     return {l: argv[i] for i, (t, l) in enumerate(emb)}
 
 
+class Node:
+    def __init__(self, key, child):
+        self.key = key
+        self.child = child if type(child) == str else [Node(*n) for n in child]
+
+    def __str__(self):
+        if self.key == 'f':
+            return "-%s" % self.child
+        elif self.key == 'a':
+            return "<%s>" % self.child
+        elif self.key == 'c':
+            return "%s" % self.child
+        elif self.key == 'opt':
+            return "[" + " ".join(str(c) for c in self.child) + "]"
+        elif self.key == 'exc':
+            return "(" + "|".join(str(c) for c in self.child) + ")"
+        elif self.key == 'req':
+            return "(" + " ".join(str(c) for c in self.child) + ")"
+        elif self.key == 'uns':
+            return "{" + " ".join(str(c) for c in self.child) + "}"
+
+def pattern_str(spec):
+    return " ".join(str(Node(*root)) for root in spec)
+
+
 def main():
     args = cli()
+    dump = args.get("dump")
     language = args.get("language", "py")
     output_file = args.get("output_file", "cli.py")
+    spec, usage = "", ""
     with open(args["spec_file"]) as f:
-        print f.read()
-    spec_module = importlib.import_module(args["spec_file"][:-3], ".")
-    print dir(spec_module)
+        exec(f.read())
+    if dump:
+        print pattern_str(spec)
+    else:
+        embs = embodiments.process(spec)
+        validate.process(embs)
+        lutable = lut.generate(embs)
+        rst = format.export(usage, lutable, language)
+        with open(output_file, "w") as f:
+            f.write(rst)
 
 
 if __name__ == "__main__":
