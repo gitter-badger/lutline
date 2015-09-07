@@ -43,7 +43,7 @@ setup(
         #'Programming Language :: Python :: 3.3',
         #'Programming Language :: Python :: 3.4',
     ],
-    packages=['lutline'],
+    packages=['lutline', 'lutline.formatize'],
     entry_points={
         'console_scripts': [
             'lutline = lutline.main:main',
