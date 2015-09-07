@@ -85,7 +85,7 @@ def main():
         embs = embodiments.process(spec)
         validate.process(embs)
         lutable = lut.generate(embs)
-        rst = format.export(usage, lutable, language)
+        rst = formatize.export(usage, lutable, language)
         with open(output_file, "w") as f:
             f.write(rst)
 
