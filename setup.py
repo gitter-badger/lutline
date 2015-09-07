@@ -15,7 +15,7 @@ execfile('lutline/version.py')
 setup(
     name='lutline',
     version=__version__,
-    description="A method to generate a command-line interface parser",
+    description="Parse argv using a look-up table generated from your CLI specification.",
     long_description=long_description,
     author="Filipe Funenga",
     author_email="fmafunenga@gmail.com",
@@ -27,7 +27,7 @@ setup(
         #   3 - Alpha
         #   4 - Beta
         #   5 - Production/Stable
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         # Indicate who your project is intended for
         'Intended Audience :: Developers',
         'Topic :: Software Development :: Build Tools',
