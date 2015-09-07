@@ -3,6 +3,7 @@
 
 
 import sys
+import importlib
 
 
 USAGE = """usage: lutline [-l <language>] [-o <output_file>] <spec_file>
@@ -11,11 +12,11 @@ USAGE = """usage: lutline [-l <language>] [-o <output_file>] <spec_file>
 Commands:
     dump              Prints out the pattern parsed from the spec_file.
 
-Options:
+Options and arguments:
     -l <language>     Sets the output programming language. Default is 'py'.
-    -f <spec_file>    Sets the input file with the specification.
     -o <output_file>  Sets the name of the output file to dump the parser code.
                       Default is 'cli.py'.
+    <spec_file>       Sets the input file with the specification.
 """
 
 
@@ -43,7 +44,12 @@ def cli(argv=sys.argv[1:]):
 
 def main():
     args = cli()
-    print args
+    language = args.get("language", "py")
+    output_file = args.get("output_file", "cli.py")
+    with open(args["spec_file"]) as f:
+        print f.read()
+    spec_module = importlib.import_module(args["spec_file"][:-3], ".")
+    print dir(spec_module)
 
 
 if __name__ == "__main__":
