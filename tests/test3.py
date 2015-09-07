@@ -4,6 +4,7 @@
 
 import os
 import subprocess
+import multiprocessing
 
 
 def run():
@@ -814,6 +815,7 @@ spec = [
             pass
         else:
             rsts.append(arg)
+
     assert len(rsts) == 2
     assert ['ola.txt'] in rsts
     assert ['-f', 'ola.txt', 'ola.txt'] in rsts

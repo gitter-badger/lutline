@@ -14,7 +14,7 @@ usage: lutline [-l <language>] [-o <output_file>] <spec_file>
        lutline dump <spec_file>
 
 Paramaters:
-    -l <language>     Sets the output programming language. Default is 'py'.
+    -l <language>     Sets the output programming language. Default is 'python'.
     -f <spec_file>    Sets the input file with the specification.
     -o <output_file>  Sets the name of the output file to dump the parser code.
                       Default is 'cli.py'.
@@ -37,7 +37,7 @@ Paramaters:
     embodiments = lutline.embodiments.process(spec)
     lutline.validate.process(embodiments)
     lut = lutline.lut.generate(embodiments)
-    rst = lutline.format.export(usage, lut, "py")
+    rst = lutline.format.export(usage, lut, "python")
     with open("temp2.py", "w") as f:
         f.write(rst)
     temp = importlib.import_module("temp2", ".")

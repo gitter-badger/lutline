@@ -17,7 +17,7 @@ Commands:
     dump              Prints out the pattern parsed from the spec_file.
 
 Options and arguments:
-    -l <language>     Sets the output programming language. Default is 'py'.
+    -l <language>     Sets the output programming language. Default is 'python'.
     -o <output_file>  Sets the name of the output file to dump the parser code.
                       Default is 'cli.py'.
     <spec_file>       Sets the input file with the specification.
@@ -74,7 +74,7 @@ def pattern_str(spec):
 def main():
     args = cli()
     dump = args.get("dump")
-    language = args.get("language", "py")
+    language = args.get("language", "python")
     output_file = args.get("output_file", "cli.py")
     spec, usage = "", ""
     with open(args["spec_file"]) as f:
