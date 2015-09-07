@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="./images/favicon.ico">
-    <title>Lutline</title>
+    <title>lutline - Python package</title>
     <link href="./css/bootstrap.min.css" rel="stylesheet">
     <link href="./css/jumbotron-narrow.css" rel="stylesheet">
     <script src="./js/ie-emulation-modes-warning.js"></script>
@@ -27,65 +27,60 @@
     </div>
 
     <div class="jumbotron">
-      <h1>Lutline</h1>
+      <h1>lutline</h1>
       <p class="lead">Parse <code>argv</code> using a look-up table generated
         from your command-line interface specification.</p>
     </div>
 
     <ul>
       <li><a href="#installation">Installation</a></li>
-      <li><a href="#generating">Generating a parser</a></li>
       <li><a href="#using">Using the parser</a></li>
+      <li><a href="#generating">Generating a parser</a></li>
       <li><a href="#detaching">(optional) Detaching lutline from the project dependencies</a></li>
     </ul>
 
+    <!--------------------------->
     <h2 id="installation">Installation</h2>
 <pre>
-  <font color="#b5e853">$</font> virtualenv venv
-  <font color="#b5e853">$</font> source venv/bin/activate
-  <font color="#b5e853">(venv)$</font> pip install lutline
+  <font color="#b5e853">$</font> pip install lutline
 </pre>
 
-    <h2 id="using">Using the parser</h2>
-    <p>The developer lists the source files and he finds the following.</p>
-<pre>
-<font color="#b5e853">(venv)$</font> ls
-main.py  spec.py
-<font color="#b5e853">(venv)$</font> lutline -l py spec.py
-<font color="#b5e853">(venv)$</font> ls
-cli.py  main.py  spec.py
-</pre>
-    <p>The <code>cli.py</code> file comprises a look-up table (LUT), specifically tailored to the
-    CLI specification provided by the <code>spec.py</code> file, and a function to match the
-    <code>argv</code> array against the LUT. In the initial function of his application, the
-    developer imports <code>cli.py</code> and runs the function <code>parse()</code>.
-<pre>
-#!/usr/bin/env python
-
-import cli
-
-def main():
-    args = cli.parse()
-    (...)
-
-if __name__ == "__main__":
-    main()
-</pre>
-    <code>cli.parse()</code> only returns when the CLI pattern is satisfied, otherwise it
-    internally aborts execution with python's <code>sys.exit(...)</code>.
-
+    <!--------------------------->
     <h2 id="generating">Generating a parser</h2>
+    <p>The basic structure of a command-line interface application, comprises
+       an initial parsing stage where arguments received from the
+       command-line are matched against a pattern. For example:</p>
 <pre>
-<font color="#b5e853">(venv)$</font> cat spec.py
-usage = "usage: ./app [-f] &ltfin&gt"
-spec = [
-['opt', [['f', 'f'],
-         ['a', 'fout']]
-],
-['a', 'fin']
-]
-</pre>
+  <font color="#b5e853">$</font> cat main.py
+  #!/usr/bin/env python
 
+  import cli
+
+  def main():
+      args = cli.parse()
+      # (...)
+
+  if __name__ == "__main__":
+      main()
+</pre>
+    <p>The initial <code>main()</code> function of this application runs the function
+      <code>parse()</code> from <code>cli.py</code> module.
+      <code>cli.parse()</code> should only return when the CLI pattern is
+      satisfied, otherwise it internally aborts execution with an error message.</p>
+    <p>So, our objective is to grab a description of the CLI pattern the
+      developer wants to implement, and provide him/her with the
+      <code>cli.py</code> module. The developer starts by creating the following <code>spec.py</code>
+      file.</p>
+<pre>
+  <font color="#b5e853">$</font> cat spec.py
+  usage = "usage: ./superapp [-f &ltfout&gt] &ltfin&gt"
+  spec = [
+      ['opt', [['f', 'f'],
+               ['a', 'fout']]
+      ],
+      ['a', 'fin']
+  ]
+</pre>
     <p>The structural description provided by the <code>spec</code> variable, is quite basic to
        understand:</p>
     <ul>
@@ -97,18 +92,46 @@ spec = [
       <li>when the type is a relation, the content is a list of child nodes.</li>
     </ul>
 
+    <!--------------------------->
+    <h2 id="using">Using the parser</h2>
+    <p>The <code>cli.py</code> module can be generated using the <i>lutline</i>
+      command-line tool as follows (see its USAGE message for more information).</p>
+<pre>
+  <font color="#b5e853">$</font> ls
+  main.py  spec.py
+  <font color="#b5e853">$</font> lutline spec.py
+  <font color="#b5e853">$</font> ls
+  cli.py  main.py  spec.py
+</pre>
+    <p>The <code>cli.py</code> file comprises a look-up table (LUT), specifically tailored to the
+    CLI specification provided by the <code>spec.py</code> file, and a function to match the
+    <code>argv</code> array against the LUT. The cli implemented can now be
+    tested directly or through the main application.</p>
+<pre>
+  <font color="#b5e853">$</font> python cli.py hello.txt
+  {'fin': 'hello.txt'}
+  <font color="#b5e853">$</font> python cli.py -f bye.txt hello.txt
+  {'-f': 'f', 'fout': 'bye.txt', 'fin': 'hello.txt'}
+  <font color="#b5e853">$</font> python cli.py --this-option-is-unknown
+  usage: ./superapp [-f &ltfout&gt] &ltfin&gt
+</pre>
 
-    <span class="label label-default">optional</span><h2 id="detaching">Detaching lutline from the project dependencies</h2>
+    <!--------------------------->
+    <h2 id="detaching">Detaching lutline from the project dependencies</h2>
     <p>The file generated by <i>lutline</i>, <code>cli.py</code>, only requires the <code>sys</code> module
     provided by Python itself (in order to grab the <code>argv</code> array). This means that
     from the moment said file is generated, <i>lutline</i> is no longer required in the
     developers system. Basically, <i>lutline</i> is a development-time dependency, as
     opposed to a compilation or run time dependency.</p>
-    <p>Since in the provided scenario, the developer was using a virtual environment,
-    detaching <i>lutline</i> is simply achieved with the following.</p>
+    <p>If a virtual environmet is used, detaching <i>lutline</i> is simply achieved with the following.</p>
 <pre>
-<font color="#b5e853">(venv)$</font> deactivate
-<font color="#b5e853">$</font> rm -r venv
+  <font color="#b5e853">$</font> virtualenv venv
+  <font color="#b5e853">$</font> source venv/bin/activate
+  <font color="#b5e853">(venv)$</font> pip install lutline
+  <font color="#b5e853">(venv)$</font> lutline spec.py
+  <font color="#b5e853">(venv)$</font> deactivate
+  <font color="#b5e853">$</font> rm -r venv
+  # "python main.py" or "python cli.py" still works fine ;)
 </pre>
 </div>
 
