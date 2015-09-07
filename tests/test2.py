@@ -37,7 +37,7 @@ Paramaters:
     embodiments = lutline.embodiments.process(spec)
     lutline.validate.process(embodiments)
     lut = lutline.lut.generate(embodiments)
-    rst = lutline.format.export(usage, lut, "python")
+    rst = lutline.formatize.export(usage, lut, "python")
     with open("temp2.py", "w") as f:
         f.write(rst)
     temp = importlib.import_module("temp2", ".")

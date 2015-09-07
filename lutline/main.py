@@ -7,7 +7,7 @@ import sys
 import embodiments
 import validate
 import lut
-import format
+import formatize
 
 
 USAGE = """usage: lutline [-l <language>] [-o <output_file>] <spec_file>

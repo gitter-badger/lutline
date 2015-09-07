@@ -4,4 +4,4 @@
 from . import embodiments
 from . import validate
 from . import lut
-from . import format
+from . import formatize
