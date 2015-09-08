@@ -67,6 +67,7 @@ class Node:
         elif self.key == 'uns':
             return "{" + " ".join(str(c) for c in self.child) + "}"
 
+
 def pattern_str(spec):
     return " ".join(str(Node(*root)) for root in spec)
 
@@ -85,7 +86,7 @@ def main():
         embs = embodiments.process(spec)
         validate.process(embs)
         lutable = lut.generate(embs)
-        rst = formatize.export(usage, lutable, language)
+        rst = formatize.export(spec, usage, lutable, language)
         with open(output_file, "w") as f:
             f.write(rst)
 
