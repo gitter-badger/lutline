@@ -7,6 +7,14 @@ import subprocess
 import multiprocessing
 
 
+def __try_clean():
+    for fname in ["cli", "cli.c", "spec.py"]:
+        try:
+            os.remove(fname)
+        except:
+            pass
+
+
 def run():
     spec = """\
 usage = "usage: ./app [-f <fout>] <fin>"
@@ -17,9 +25,8 @@ spec = [
 """
     with open("spec.py", "w") as f:
         f.write(spec)
-    os.system("python lutline/main.py -l c -o cli.c spec.py")
+    os.system("python ../../lutline/main.py -l c -o cli.c spec.py")
     os.system("gcc -Wall -o cli cli.c")
-    return
 
     # We are about to try 780 argv combinations. No problem
     args = [
@@ -810,7 +817,7 @@ spec = [
     rsts = []
     for arg in args:
         count += 1
-        cmd = "python cli.py " + " ".join(arg)
+        cmd = "./cli " + " ".join(arg)
         proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
         (out, err) = proc.communicate()
         try:
@@ -819,14 +826,13 @@ spec = [
             pass
         else:
             rsts.append(arg)
-
+    
     assert len(rsts) == 2
     assert ['ola.txt'] in rsts
     assert ['-f', 'ola.txt', 'ola.txt'] in rsts
     print "tested", count, "possibilities",
 
-    os.remove("cli.py")
-    os.remove("spec.py")
+    __try_clean()
 
 
 if __name__ == "__main__":

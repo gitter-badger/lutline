@@ -61,6 +61,11 @@ void parse(int argc, char *argv[], Arguments *rst) {
         pch = strchr(ptr, ',');
         for (i=1; i < argc; i++) {
             buf0[0] = *ptr++;
+            if ((buf0[0] == 'f' && argv[i][0] != '-') ||
+                    (buf0[0] != 'f' && argv[i][0] == '-')) {
+                fprintf(stderr, "%s\n", usage);
+                exit(EXIT_FAILURE);
+            }
             ptr++;
             for (j=0; ptr != pch && *ptr != ':'; j++)
                 buf1[j] = *ptr++;
@@ -79,8 +84,6 @@ int main(int argc, char *argv[]){
     Arguments args = {0};
 
     parse(argc, argv, &args);
-    printf("args.f_f: %s\n", args.f_f);
-    printf("args.a_fout: %s\n", args.a_fout);
-    printf("args.a_fin: %s\n", args.a_fin);
+    printf("{}\n");
     return 0;
 }
