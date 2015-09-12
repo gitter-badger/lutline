@@ -3,7 +3,6 @@
 
 
 import json
-import itertools
 
 
 def __expand(key, body):
@@ -24,9 +23,7 @@ def __expand(key, body):
 
 
 def process(root):
-    if type(root) != unicode:
-        root = json.dumps(root)
-    root = json.loads(root)
+    root = json.loads(root if type(root) == unicode else json.dumps(root))
     __flag = lambda e: type(e) == list and type(e[1]) == list
     queue = [root]
     leafs = []

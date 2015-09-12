@@ -2,15 +2,7 @@
 #-*- coding:utf-8 -*-
 
 
-import sys
-
-import embodiments
-import validate
-import lut
-import formatize
-
-
-USAGE = """usage: lutline [-l <language>] [-o <output_file>] <spec_file>
+"""usage: lutline [-l <language>] [-o <output_file>] <spec_file>
        lutline dump <spec_file>
 
 Commands:
@@ -24,26 +16,21 @@ Options and arguments:
 """
 
 
-def cli(argv=sys.argv[1:]):
-    lut = (",-l;1:-o;2:dump;3,4|,,7|,,4|,,2|a;spec_file,,|c;dump:a;spec_file,,|"
-           ",,1|f;o:a;output_file:a;spec_file,,|,-o;1,2|,,2|f;l:a;language:a;sp"
-           "ec_file,,|,,1|f;l:a;language:f;o:a;output_file:a;spec_file,,")
-    getline = lambda l: l[:None if -1 == l.find("|") else l.find("|")]
-    lst = lambda s: [e.split(";") for e in s.split(":")] if ";" in s else s
-    expand = lambda s: None if s == '' else lst(s)
-    emb, exs, imp = (expand(e) for e in getline(lut).split(","))
-    forward = lambda l: None if -1 == l.find("|") else l[l.find("|") + 1:]
-    for arg in argv:
-        h = next((e1 for e0, e1 in exs if arg == e0), None) if exs else None
-        if not (h or imp):
-            sys.exit(USAGE)
-        for i in range(int(h if h else imp)):
-            lut = forward(lut)
-        emb, exs, imp = (expand(e) for e in getline(lut).split(","))
-    f = lambda a, t: t != "f" and a[0] == "-" or t == "f" and a[0] != "-"
-    if not emb or any(f(a, t) for a, (t, l) in zip(argv, emb)):
-        sys.exit(USAGE)
-    return {l: argv[i] for i, (t, l) in enumerate(emb)}
+import sys
+
+
+def parse(argv=sys.argv[1:]):
+    lut = ("1,,,spec_file|2,0,dump,dump;spec_file|3,0,-o,-o;output_file;spec_fi"
+           "le|3,0,-l,-l;language;spec_file|5,0;2,-l-o,-l;language;-o;output_fi"
+           "le;spec_file")
+    for l, idxs, rst, emb in (l.split(',') for l in lut.split('|')):
+        if int(l) != len(argv):
+            continue
+        if rst == ''.join(argv[int(i)] for i in idxs.split(';') if len(i.strip())):
+            ret = [(k, argv[i]) for i, k in enumerate(emb.split(';'))]
+            if all(v[0] != '-' for k, v in ret if k[0] != '-'):
+                return dict(ret)
+    sys.exit(__doc__)
 
 
 class Node:
@@ -68,12 +55,8 @@ class Node:
             return "{" + " ".join(str(c) for c in self.child) + "}"
 
 
-def pattern_str(spec):
-    return " ".join(str(Node(*root)) for root in spec)
-
-
 def main():
-    args = cli()
+    args = parse()
     dump = args.get("dump")
     language = args.get("language", "python")
     output_file = args.get("output_file", "cli.py")
@@ -81,7 +64,7 @@ def main():
     with open(args["spec_file"]) as f:
         exec(f.read())
     if dump:
-        print pattern_str(spec)
+        print " ".join(str(Node(*root)) for root in spec)
     else:
         embs = embodiments.process(spec)
         validate.process(embs)
