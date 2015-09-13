@@ -2,6 +2,36 @@
 #-*- coding:utf-8 -*-
 
 
+"""\
+#######
+LUTLINE
+#######
+
+Parse `argv` using a look-up table generated from your command-line interface specification.
+
+*******
+Install
+*******
+
+Install lutline from PyPI with:
+
+    $ pip install lutline
+
+***********
+Development
+***********
+
+====
+Test
+====
+
+Test lutline using:
+
+    $ python -m tests
+
+"""
+
+
 import os.path
 from setuptools import setup
 
@@ -16,7 +46,7 @@ setup(
     name='lutline',
     version=__version__,
     description="Parse argv using a look-up table generated from your CLI specification.",
-    long_description=long_description,
+    long_description=__doc__,
     author="Filipe Funenga",
     author_email="fmafunenga@gmail.com",
     url="http://ffunenga.github.io/lutline",
@@ -43,7 +73,7 @@ setup(
         #'Programming Language :: Python :: 3.3',
         #'Programming Language :: Python :: 3.4',
     ],
-    packages=['lutline', 'lutline.formatize'],
+    packages=['lutline', 'lutline.templates'],
     entry_points={
         'console_scripts': [
             'lutline = lutline.main:main',
