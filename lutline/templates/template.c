@@ -6,7 +6,7 @@
 #define BUFFER_SIZE 64
 
 
-typedef struct __cli {/*{{arguments}}*/
+typedef struct __cli {{{arguments}}
 } CLI;
 
 
@@ -17,51 +17,65 @@ void parse(int argc, char *argv[], CLI *cli) {
     char buf0[BUFFER_SIZE], buf1[BUFFER_SIZE];
     int j, i;
     while (*ptr != '\0') {
-        for (j=0; *ptr != ','; j++)
+        for (j=0; *ptr != ',' && *ptr != '\0'; j++)
             buf0[j] = *ptr++;
         buf0[j] = '\0';
-        if (argc != atoi(buf0)) {
-            while (*ptr != '|')
-                ptr++;
+        if (*ptr == ',')
             ptr++;
+        j = atoi(buf0);
+        if ((argc - 1) < j)
+            break;
+        if ((argc - 1) > j) {
+            while (*ptr != '|' && *ptr != '\0')
+                ptr++;
+            if (*ptr == '|')
+                ptr++;
             continue;
         }
-        while (*ptr != ',') {
-            for (j=0; *ptr != ';' || *ptr != ','; j++)
+        buf1[0] = '\0';
+        while (*ptr != ',' && *ptr != '\0') {
+            for (j=0; (*ptr != ';' && *ptr != ',')  && *ptr != '\0'; j++)
                 buf0[j] = *ptr++;
             buf0[j] = '\0';
-            strcat(buf1, argv[atoi(buf0)]);
+            if (*ptr == ';')
+                ptr++;
+            j = atoi(buf0);
+            strcat(buf1, argv[j + 1]);
         }
-        for (j=0; *ptr != ','; j++)
+        if (*ptr == ',')
+            ptr++;
+        for (j=0; *ptr != ',' && *ptr != '\0'; j++)
             buf0[j] = *ptr++;
         buf0[j] = '\0';
-        if (strcmp(buf0, buf1))
+        if (*ptr == ',')
+            ptr++;
+        if (strcmp(buf0, buf1)){
+            while (*ptr != '|' && *ptr != '\0')
+                ptr++;
+            if (*ptr == '|')
+                ptr++;
             continue;
-        for (i=0; i < argc; i++) {
-            for (j=0; *ptr != ';' || *ptr != '|'; j++)
+        }
+        for (i=1; i < argc; i++) {
+            for (j=0; (*ptr != ';' && *ptr != '|')  && *ptr != '\0'; j++)
                 buf0[j] = *ptr++;
             buf0[j] = '\0';
-            if (buf0[0] != '-' && argv[i] == '-')
+            if (*ptr == ';')
+                ptr++;
+            if (buf0[0] != '-' && argv[i][0] == '-') {
+                fprintf(stderr, "%s\n", usage);
                 exit(EXIT_FAILURE);
-            /*
-            if (!strcmp(buf0, "fin"))
-                cli->fin = argv[i];
-            else
-            if (!strcmp(buf0, "fout"))
-                cli->fout = argv[i];
-            else
-            if (!strcmp(buf0, "-f"))
-                cli->_f = argv[i];
-            */
+            }{{comparers}}
         }
+        return;
     }
+    fprintf(stderr, "%s\n", usage);
     exit(EXIT_FAILURE);
 }
 
 
 int main(int argc, char *argv[]){
-    CLI cli;
-    parse(argc, argv, &cli);
-    printf("{}\n");
+    CLI cli = {0};
+    parse(argc, argv, &cli);{{dumpers}}
     return 0;
 }

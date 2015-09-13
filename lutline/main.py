@@ -18,6 +18,11 @@ Options and arguments:
 
 import sys
 
+import embodiments
+import validate
+import lut
+import templates
+
 
 def parse(argv=sys.argv[1:]):
     lut = ("1,,,spec_file|2,0,dump,dump;spec_file|3,0,-o,-o;output_file;spec_fi"
@@ -60,16 +65,21 @@ def main():
     dump = args.get("dump")
     language = args.get("language", "python")
     output_file = args.get("output_file", "cli.py")
-    spec, usage = "", ""
     with open(args["spec_file"]) as f:
-        exec(f.read())
+        specfile = eval(f.read())
+    spec = specfile.get("spec", "")
+    usage = specfile.get("usage", "")
     if dump:
-        print " ".join(str(Node(*root)) for root in spec)
+        print "Pattern:"
+        print "   ", " ".join(str(Node(*root)) for root in spec)
+    embs = embodiments.process(spec)
+    validate.process(embs)
+    lutable = lut.generate(embs)
+    if dump:
+        print "LUT:"
+        print "   ", '"%s"' % templates.serialize(lutable)
     else:
-        embs = embodiments.process(spec)
-        validate.process(embs)
-        lutable = lut.generate(embs)
-        rst = formatize.export(spec, usage, lutable, language)
+        rst = templates.export(spec, usage, lutable, language)
         with open(output_file, "w") as f:
             f.write(rst)
 
