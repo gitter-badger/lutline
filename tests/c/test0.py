@@ -43,6 +43,7 @@ def run():
     assert ('file.txt',) in rsts
     assert ('-f', 'file.txt', 'file.txt') in rsts
 
+    print "tested", count, "possibilities",
     for fname in ["cli", "cli.c", "spec.py"]:
         try:
             os.remove(fname)

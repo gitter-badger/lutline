@@ -11,7 +11,7 @@ typedef struct __cli {{{arguments}}
 
 
 void parse(int argc, char *argv[], CLI *cli) {
-    char usage[] = "{{usage}}";
+    char usage[] = ("{{usage}}");
     char lut[] = ("{{lut}}");
     char *ptr = lut;
     char buf0[BUFFER_SIZE], buf1[BUFFER_SIZE];

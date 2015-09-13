@@ -30,7 +30,7 @@ def run():
     embodiments = lutline.embodiments.process(spec)
     lutline.validate.process(embodiments)
     lut = lutline.lut.generate(embodiments)
-    rst = lutline.templates.export(spec, usage, lut, "python")
+    rst = lutline.templates.export(usage, lut, "python")
     with open("temp.py", "w") as f:
         f.write(rst)
 

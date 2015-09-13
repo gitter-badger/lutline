@@ -79,7 +79,7 @@ def main():
         print "LUT:"
         print "   ", '"%s"' % templates.serialize(lutable)
     else:
-        rst = templates.export(spec, usage, lutable, language)
+        rst = templates.export(usage, lutable, language)
         with open(output_file, "w") as f:
             f.write(rst)
 

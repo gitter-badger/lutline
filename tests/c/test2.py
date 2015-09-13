@@ -5,17 +5,17 @@
 import importlib
 import os
 import itertools
+import subprocess
 
 
 def run():
-    import lutline
-
-    usage = ("Usage:\n"
-             "    ./kitchen burger [--raw | --medium | --overcooked]\n"
-             "    ./kitchen [-u <urgency>] <request>\n"
-             "    ./kitchen -h | --help | --version\n")
-
-    spec = [
+    spec = r"""\
+{
+    'usage': ('Usage:\\n'
+              '    ./kitchen burger [--raw | --medium | --overcooked]\\n'
+              '    ./kitchen [-u <urgency>] <request>\\n'
+              '    ./kitchen -h | --help | --version\\n'),
+    'spec': [
         ['exc', [
             [
                 ['c', 'burger'],
@@ -43,30 +43,25 @@ def run():
             ]
         ]]
     ]
+}
+"""
+    with open("spec.py", "w") as f:
+        f.write(spec)
+    os.system("python lutline/main.py -l c -o cli.c spec.py")
+    os.system("gcc -Wall -o cli cli.c")
 
-    embodiments = lutline.embodiments.process(spec)
-    lutline.validate.process(embodiments)
-    lut = lutline.lut.generate(embodiments)
-    rst = lutline.templates.export(usage, lut, "python")
-    with open("temp.py", "w") as f:
-        f.write(rst)
-
-    temp = importlib.import_module("temp", ".")
-    reload(temp)
     count = 0
     rsts = []
     samples = ['burger', '--raw', '-raws', '--medium', '-meds',
                '--overcooked', '-overc']
-    for i in range(max(len(e) for e in embodiments) + 1):
+    for i in range(2 + 1):
         iterator = itertools.product(samples, repeat=i)
         for op in iterator:
             count += 1
+            cmd = ["./cli"] + list(op)
             try:
-                rst = temp.parse(op)
-                assert type(rst) == dict
-            except KeyboardInterrupt:
-                return
-            except SystemExit:
+                rst = subprocess.check_output(cmd, stderr=subprocess.PIPE)
+            except subprocess.CalledProcessError:
                 pass
             else:
                 rsts.append(op)
@@ -80,16 +75,14 @@ def run():
     rsts = []
     samples = ['-u', '--u', '-u1', 'request.txt', 'urgency',
                '--version', '-v', '--help', '-h', '--h', '-help']
-    for i in range(max(len(e) for e in embodiments) + 1):
+    for i in range(3 + 1):
         iterator = itertools.product(samples, repeat=i)
         for op in iterator:
             count += 1
+            cmd = ["./cli"] + list(op)
             try:
-                rst = temp.parse(op)
-                assert type(rst) == dict
-            except KeyboardInterrupt:
-                return
-            except SystemExit:
+                rst = subprocess.check_output(cmd, stderr=subprocess.PIPE)
+            except subprocess.CalledProcessError:
                 pass
             else:
                 rsts.append(op)
@@ -106,5 +99,8 @@ def run():
     assert ('-u', 'urgency', 'urgency') in rsts
 
     print "tested", count, "possibilities",
-    os.remove("temp.py")
-    os.remove("temp.pyc")
+    for fname in ["cli", "cli.c", "spec.py"]:
+        try:
+            os.remove(fname)
+        except:
+            pass

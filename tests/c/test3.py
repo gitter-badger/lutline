@@ -5,16 +5,16 @@
 import importlib
 import os
 import itertools
+import subprocess
 
 
 def run():
-    import lutline
-
-    usage = ("Usage:\n"
-             "    ./hotel {-q (-v | -v1 | -v2)} <rooms>\n"
-             "    ./hotel -v [<request>]\n")
-
-    spec = [
+    spec = r"""\
+{
+    'usage': ('Usage:\\n'
+             '    ./hotel {-q (-v | -v1 | -v2)} <rooms>\\n'
+             '    ./hotel -v [<request>]\\n'),
+    'spec': [
         ['exc', [
             [
                 ['uns', [
@@ -36,29 +36,24 @@ def run():
             ]
         ]]
     ]
+}
+"""
+    with open("spec.py", "w") as f:
+        f.write(spec)
+    os.system("python lutline/main.py -l c -o cli.c spec.py")
+    os.system("gcc -Wall -o cli cli.c")
 
-    embodiments = lutline.embodiments.process(spec)
-    lutline.validate.process(embodiments)
-    lut = lutline.lut.generate(embodiments)
-    rst = lutline.templates.export(usage, lut, "python")
-    with open("temp.py", "w") as f:
-        f.write(rst)
-
-    temp = importlib.import_module("temp", ".")
-    reload(temp)
     count = 0
     rsts = []
     samples = ['-v', '--v', '-v1', 'rooms.txt']
-    for i in range(max(len(e) for e in embodiments) + 1):
+    for i in range(3 + 1):
         iterator = itertools.product(samples, repeat=i)
         for op in iterator:
             count += 1
+            cmd = ["./cli"] + list(op)
             try:
-                rst = temp.parse(op)
-                assert type(rst) == dict
-            except KeyboardInterrupt:
-                return
-            except SystemExit:
+                rst = subprocess.check_output(cmd, stderr=subprocess.PIPE)
+            except subprocess.CalledProcessError:
                 pass
             else:
                 rsts.append(op)
@@ -69,16 +64,14 @@ def run():
 
     rsts = []
     samples = ['-q', '-v', '-v1', '-v2', '--v', 'rooms.txt']
-    for i in range(max(len(e) for e in embodiments) + 1):
+    for i in range(3 + 1):
         iterator = itertools.product(samples, repeat=i)
         for op in iterator:
             count += 1
+            cmd = ["./cli"] + list(op)
             try:
-                rst = temp.parse(op)
-                assert type(rst) == dict
-            except KeyboardInterrupt:
-                return
-            except SystemExit:
+                rst = subprocess.check_output(cmd, stderr=subprocess.PIPE)
+            except subprocess.CalledProcessError:
                 pass
             else:
                 rsts.append(op)
@@ -94,5 +87,8 @@ def run():
     assert ('-v2', '-q', 'rooms.txt') in rsts
 
     print "tested", count, "possibilities",
-    os.remove("temp.py")
-    os.remove("temp.pyc")
+    for fname in ["cli", "cli.c", "spec.py"]:
+        try:
+            os.remove(fname)
+        except:
+            pass
