@@ -18,7 +18,7 @@
             <div class="header fixed-top clearfix">
                 <ul class="nav nav-pills">
                     <li role="presentation" style="margin-right:20px;"><a href="index.html"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Back</a></li>
-                    <li role="presentation"><h3 class="pull-right" role="presentation">Efficiency</h3></li>
+                    <li role="presentation"><h3 class="pull-right" role="presentation">Efficiency analysis</h3></li>
                 </ul>
             </div>
             <div style="float:right; margin-left:30px; width: 300px;">
@@ -33,8 +33,8 @@
                     </div>
                 </div>
             </div>
-            <p>This analysis compares a sample of seven command-line python modules. They can
-be found in the following sources:</p>
+            <p>This analysis compares a sample command-line python modules. They can
+be found through the following sources:</p>
 
 <ul>
 <li><a href="https://pypi.python.org/pypi?%3Aaction=search&amp;term=cli&amp;submit=search">PyPI</a></li>
@@ -71,16 +71,20 @@ into your application.</p>
 </tbody>
 </table>
 
+<p>Caution is advised when comparing these numbers. A reference is herein made to
+<a href="https://en.wikipedia.org/wiki/Source_lines_of_code#Usage_of_SLOC_measures">an Wikipedia article</a>
+explaining some particularities.</p>
+
 <p>Solutions with a similar amount of non-empty lines of code are difficult to
 compare. Oftentimes, there is the possibility to rewrite readable segments
-of code occupying more than one line, into a single, but difficult to read,
+of code occupying more than one line, into a single, but harder to understand,
 line of code. As such, it is not reasonable to make a technical comparison
 based on these results, when two solutions have the same order of
-magnitude, for example <em>Cliff</em> vs <em>Plac</em>.</p>
+magnitude, for example <em>docopt</em> vs <em>compago</em> or <em>Plac</em> vs <em>argparse</em>.</p>
 
 <p>However, the same cannot be said when different orders of magnitude are
-compared, for example <em>docopt</em> vs <em>Click</em> (the second imports 12 times more
-code than the first).</p>
+compared, for example <em>docopt</em> vs <em>argparse</em> (4 times less code) or <em>compago</em>
+vs <em>Click</em> (9 times less code).</p>
 
 <p>Currently, <em>lutline</em> uses 14 non-empty lines of Python code.</p>
 
@@ -144,9 +148,16 @@ the command-line arguments while using third party code.</p>
 </tbody>
 </table>
 
+<p>There was some difficulty in implementing the same command-line specification
+in all the modules, except for <em>docopt</em>. The main problem is the need to
+re-learn the programming interface for each solution.</p>
+
+<p>Starting from one simple command-line specification, <em>lutline</em> proves to be
+the best solution, always showing the lowest levels of resource usage.</p>
+
             <footer class="footer">
                 <div style="float:left;"><a href="https://github.com/ffunenga/lutline/blob/master/LICENSE">Check the MIT License</a></div>
-                <div style="float:right;">This page was generated in 2015-09-20 11:36:44</div>
+                <div style="float:right;">This page was generated in 2015-09-20 13:36:29</div>
             </footer>
         </div>
         <script src="js/jquery.min.js"></script>

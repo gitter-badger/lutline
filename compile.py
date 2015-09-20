@@ -130,9 +130,9 @@ TEMPLATE_DOC = """\
 </html>
 """
 
-with open("get_started.md") as f:
+with open("docs/get_started.md") as f:
     basics = f.read()
-with open("index.md") as f:
+with open("docs/index.md") as f:
     index = f.read()
 headings = [l[2:].strip() for l in basics.splitlines() if l.startswith("##")]
 tags = [h.lower().replace(" ", "-") for h in headings]
@@ -155,9 +155,9 @@ with open("get_started.html", "w") as f:
     f.write(doc)
 
 
-with open("specfile.md") as f:
+with open("docs/specfile.md") as f:
     specfile = f.read()
-title = "The spec file"
+title = "Command-line interface specification"
 body = markdown2.markdown(specfile, extras=['fenced-code-blocks', 'toc'])
 doc = string.Template(TEMPLATE_DOC).safe_substitute(
         title=title, body=body, toc=toc, date=generated)
@@ -165,9 +165,9 @@ with open("specfile.html", "w") as f:
     f.write(doc)
 
 
-with open("efficient.md") as f:
+with open("docs/efficient.md") as f:
     efficient = f.read()
-title = "Efficiency"
+title = "Efficiency analysis"
 headings = [l[2:].strip() for l in efficient.splitlines() if l.startswith("##")]
 tags = [h.lower().replace(" ", "-") for h in headings]
 __t = '<li><a href="efficient.html#{tag}">{heading}</a></li>'

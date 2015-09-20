@@ -1,0 +1,30 @@
+# item = "(-i <item>) | (--item <item>) | (-i<item>) | (--item=<item>)"
+# style = "(-s <style>) | (--style <style>) | (-s<style>) | (--style=<style>)"
+# table = "(-t <table>) | (--table <table>) | (-t<table>) | (--table=<table>)"
+# payment_method = option('p', 'paymethod')
+#
+# restaurant.py cook [-u | --urgent] $table ($item [$style])...
+# restaurant.py checkout $table $payment_method
+# restaurant.py menu set <recepies>...
+
+exclusive:
+    required:
+        command cook
+        optional:
+            exclusive:
+                flag -u
+                flag --urgent
+        option t table
+        required:
+            option i item
+            optional:
+                option s style
+    required:
+        command checkout
+        option t table
+        option p payment_method
+    required:
+        command menu
+        command set
+        morethanone:
+            command recepies
