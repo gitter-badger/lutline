@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="icon" href="./images/favicon.ico">
+        <title>lutline - Basics</title>
+        <link href="./css/bootstrap.min.css" rel="stylesheet">
+        <link href="./css/jumbotron-narrow.css" rel="stylesheet">
+        <script src="./js/ie-emulation-modes-warning.js"></script>
+    </head>
+
+    <body>
+        <div class="container">
+            <div class="header fixed-top clearfix">
+                <ul class="nav nav-pills">
+                    <li role="presentation" style="margin-right:20px;"><a href="index.html"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Back</a></li>
+                    <li role="presentation"><h3 class="pull-right" role="presentation">Efficiency</h3></li>
+                </ul>
+            </div>
+            <div style="float:right; margin-left:30px; width: 300px;">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <p>Contents:</p>
+                        <ul>
+                            <li><a href="efficient.html#number-of-non-empty-lines-of-code">Number of non-empty lines of code</a></li>
+<li><a href="efficient.html#memory-pollution">Memory pollution</a></li>
+<li><a href="efficient.html#processing-time">Processing time</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <p>This analysis compares a sample of seven command-line python modules. They can
+be found in the following sources:</p>
+
+<ul>
+<li><a href="https://pypi.python.org/pypi?%3Aaction=search&amp;term=cli&amp;submit=search">PyPI</a></li>
+<li><a href="http://docs.python-guide.org/en/latest/scenarios/cli/">Python Guide</a></li>
+<li><a href="https://github.com/search?l=Python&amp;q=cli&amp;ref=searchresults&amp;type=Repositories&amp;utf8=%E2%9C%93">Github</a></li>
+</ul>
+
+<h2 id="number-of-non-empty-lines-of-code">Number of non-empty lines of code</h2>
+
+<p>This indicator shows an approximation of the amount of third party
+code that an import statement, such as <code>import &lt;3rd_party_module&gt;</code>, pulls
+into your application.</p>
+
+<table class="table table-striped">
+<thead>
+<tr>
+  <th>lutline</th>
+  <th>docopt</th>
+  <th>compago</th>
+  <th>Plac</th>
+  <th>argparse</th>
+  <th>Click</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>14</td>
+  <td>473</td>
+  <td>639</td>
+  <td>1352</td>
+  <td>1942</td>
+  <td>5745</td>
+</tr>
+</tbody>
+</table>
+
+<p>Solutions with a similar amount of non-empty lines of code are difficult to
+compare. Oftentimes, there is the possibility to rewrite readable segments
+of code occupying more than one line, into a single, but difficult to read,
+line of code. As such, it is not reasonable to make a technical comparison
+based on these results, when two solutions have the same order of
+magnitude, for example <em>Cliff</em> vs <em>Plac</em>.</p>
+
+<p>However, the same cannot be said when different orders of magnitude are
+compared, for example <em>docopt</em> vs <em>Click</em> (the second imports 12 times more
+code than the first).</p>
+
+<p>Currently, <em>lutline</em> uses 14 non-empty lines of Python code.</p>
+
+<h2 id="memory-pollution">Memory pollution</h2>
+
+<p>This indicator shows an approximation of the amount of memory (in MBs) that
+gets allocated when using third party code.</p>
+
+<table class="table table-striped">
+<thead>
+<tr>
+  <th>CLI specification</th>
+  <th>lutline</th>
+  <th>docopt</th>
+  <th>compago</th>
+  <th>Plac</th>
+  <th>argparse</th>
+  <th>Click</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>[-f &lt;fout&gt;] &lt;fin&gt;</code></td>
+  <td>0.09</td>
+  <td>0.21</td>
+  <td>4.19</td>
+  <td>11.31</td>
+  <td>3.34</td>
+  <td>1.82</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="processing-time">Processing time</h2>
+
+<p>This indicator shows an approximation of the time (in ms) it takes to parse
+the command-line arguments while using third party code.</p>
+
+<table class="table table-striped">
+<thead>
+<tr>
+  <th>CLI specification</th>
+  <th>lutline</th>
+  <th>docopt</th>
+  <th>compago</th>
+  <th>Plac</th>
+  <th>argparse</th>
+  <th>Click</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>[-f &lt;fout&gt;] &lt;fin&gt;</code></td>
+  <td>0.87</td>
+  <td>4.59</td>
+  <td>60.61</td>
+  <td>94.81</td>
+  <td>20.16</td>
+  <td>19.90</td>
+</tr>
+</tbody>
+</table>
+
+            <footer class="footer">
+                <div style="float:left;"><a href="https://github.com/ffunenga/lutline/blob/master/LICENSE">Check the MIT License</a></div>
+                <div style="float:right;">This page was generated in 2015-09-20 11:36:44</div>
+            </footer>
+        </div>
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+            ga('create', 'UA-35879263-5', 'auto');
+            ga('send', 'pageview');
+        </script>
+    </body>
+</html>

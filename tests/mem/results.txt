@@ -1,10 +1,10 @@
-TIME (ms)
-    lutline: 0.85, 0.87, 0.90
-    docopt: 5.77, 4.00, 3.99
-    compago: 53.53, 52.60, 75.71
-    plac: 82.28, 82.09, 120.07
-    argparse: 18.41, 18.99, 23.07
-    click: 19.58, 20.20, 19.92
+TIME (ms) {three samples and the mean value after '=>'}
+    lutline: 0.85, 0.87, 0.90 => 0.87
+    docopt: 5.77, 4.00, 3.99 => 4.59
+    compago: 53.53, 52.60, 75.71 => 60.61
+    plac: 82.28, 82.09, 120.07 => 94.81
+    argparse: 18.41, 18.99, 23.07 => 20.16
+    click: 19.58, 20.20, 19.92 => 19.90
 
 MEM (MB)
     lutline: 0.07, 0.07, 0.07
