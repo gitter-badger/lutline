@@ -1,9 +1,3 @@
-Every command-line application that makes use of the command-line provided
-arguments starts by matching the command-line arguments against a pattern.
-In case of failure, the application presents an error message and aborts its
-execution. Otherwise, its only a matter of routing the received strings to the
-right variables and move on with the application execution. Both the pattern and the routing problems are solved
-
 ## Setting up
 
 Install *lutline* in your Python environment, preferably in a virtualenv.
@@ -11,7 +5,7 @@ Install *lutline* in your Python environment, preferably in a virtualenv.
     $ pip install lutline
 
 ## Generating a parser
-Create a `spec.py` file. (More details [here](specfile))
+Create a `spec.py` file. (More details [here](specfile.html))
 
     $ cat spec.py
     spec = [
