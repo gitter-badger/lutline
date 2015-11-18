@@ -16,18 +16,17 @@ TEMPLATE_INDEX = """\
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="">
         <meta name="author" content="">
-        <link rel="icon" href="./images/favicon.ico">
-        <title>lutline - Python package</title>
-        <link href="./css/bootstrap.min.css" rel="stylesheet">
-        <link href="./css/jumbotron-narrow.css" rel="stylesheet">
-        <script src="./js/ie-emulation-modes-warning.js"></script>
+        <link rel="icon shortcut" href="images/favicon.ico">
+        <title>lutline - Efficient command-line interface</title>
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/jumbotron-narrow.css" rel="stylesheet">
     </head>
 
     <body>
         <div class="container">
             <div class="header clearfix">
                 <nav>
-                    <a class="btn btn-lg btn-success" role="button" href="https://github.com/ffunenga/lutline"><span class="glyphicon glyphicon-console" aria-hidden="true"></span> View on GitHub</a>
+                    <a class="btn btn-success" role="button" href="https://github.com/ffunenga/lutline"><span class="glyphicon glyphicon-console" aria-hidden="true"></span> View on GitHub</a>
                     <ul class="nav nav-pills pull-right">
                         <li role="presentation"><a href="https://github.com/ffunenga/lutline/zipball/master" class="btn"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Download as .zip</a></li>
                         <li role="presentation"><a href="https://github.com/ffunenga/lutline/tarball/master" class="btn"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Download as .tar.gz</a></li>
@@ -61,7 +60,7 @@ TEMPLATE_INDEX = """\
             <div style="float:right;">$date</div>
         </footer>
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="js/jquery.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
         <script>
             (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
