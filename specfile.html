@@ -4,41 +4,255 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="">
-        <meta name="author" content="">
-        <link rel="icon" href="./images/favicon.ico">
-        <title>lutline - Basics</title>
-        <link href="./css/bootstrap.min.css" rel="stylesheet">
-        <link href="./css/jumbotron-narrow.css" rel="stylesheet">
-        <script src="./js/ie-emulation-modes-warning.js"></script>
+        <meta name="description" content="With lutline you generate a look-up table based on a command-line interface specification, and the code needed to access it while looping through argv.">
+        <meta name="author" content="Filipe Funenga">
+        <link rel="icon shortcut" href="images/favicon.ico">
+        <title>lutline - Command-line interface specification</title>
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/jumbotron-narrow.css" rel="stylesheet">
+        <style>
+            .toc {
+                margin-top: 30px;
+            }
+            @media (min-width: 768px) {
+                .toc {
+                    margin-top: 0px;
+                    float:right;
+                    margin-left:30px;
+                    width: 300px;
+                }
+            }
+        </style>
     </head>
 
     <body>
         <div class="container">
             <div class="header fixed-top clearfix">
                 <ul class="nav nav-pills">
-                    <li role="presentation" style="margin-right:20px;"><a href="index.html"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Back</a></li>
+                    <li role="presentation" style="margin-right:20px;"><a href="index.html"><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span> Home</a></li>
                     <li role="presentation"><h3 class="pull-right" role="presentation">Command-line interface specification</h3></li>
                 </ul>
             </div>
-            <div style="float:right; margin-left:30px; width: 300px;">
+            <div class="toc">
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <p>Contents:</p>
                         <ul>
-                            <li><a href="get_started.html#setting-up">Setting up</a></li>
-<li><a href="get_started.html#generating-a-parser">Generating a parser</a></li>
-<li><a href="get_started.html#using-the-parser">Using the parser</a></li>
-<li><a href="get_started.html#detaching">Detaching</a></li>
-                        </ul>
+  <li><a href="#structure">Structure</a></li>
+  <li><a href="#elements">Elements</a></li>
+  <li><a href="#relations">Relations</a></li>
+  <li><a href="#example-1-docker-commit">Example 1 - docker commit</a></li>
+  <li><a href="#future-plans">Future plans</a></li>
+</ul>
+
                     </div>
                 </div>
             </div>
-            <p>This part of <em>lutline</em> is still under heavy development.</p>
+            <h2 id="structure">Structure</h2>
+
+<p>The <em>specfile</em> is a simple text file divided in three parts:</p>
+
+<ul>
+<li>a Commad-Line Interface (CLI) specification</li>
+<li>(optional) a usage message</li>
+<li>(optional) a description of the usage message</li>
+</ul>
+
+<p>The CLI specification is the core of the <em>specfile</em> and is where the developer
+provides the pattern that is to be implemented by the CLI parser. This part of
+the <em>specfile</em> describes a tree where each leaf is an <em>element</em> and each
+branch is a <em>relation</em>.</p>
+
+<h2 id="elements">Elements</h2>
+
+<p>Currently, there are two elements supported by <em>lutline</em>:</p>
+
+<table class="table table-striped">
+<thead>
+<tr>
+  <th><em>specfile</em></th>
+  <th>Pattern representation</th>
+  <th>Received in <code>argv</code></th>
+  <th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>explicit {label}</code></td>
+  <td><code>"%s" % label</code></td>
+  <td>label</td>
+  <td>Boolean</td>
+</tr>
+<tr>
+  <td><code>implicit {label}</code></td>
+  <td><code>"&lt;%s&gt;" % label</code></td>
+  <td>value</td>
+  <td>String</td>
+</tr>
+</tbody>
+</table>
+
+<p>The explicit element is a boolean variable that appears in the dictionary
+like structure returned from the CLI parsing operation, with a key equal to
+its label. True means that the elements exists in <code>argv</code>.</p>
+
+<p>The implicit element is a string variable that appears in the dictionary
+like structure returned from the CLI parsing operation, with a key equal to
+its label. This element is not directly recognizable from <code>argv</code> since
+the user places a string value in there, instead of the label.</p>
+
+<h2 id="relations">Relations</h2>
+
+<p>Currently, there are four relations supported by <em>lutline</em>:</p>
+
+<table class="table table-striped">
+<thead>
+<tr>
+  <th><em>specfile</em></th>
+  <th>Pattern representation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>required</code></td>
+  <td><code>"( children[0] children[1] (...) children[n] )"</code></td>
+</tr>
+<tr>
+  <td><code>optional</code></td>
+  <td><code>"[ children[0] children[1] (...) children[n] ]</code></td>
+</tr>
+<tr>
+  <td><code>exclusive</code></td>
+  <td><code>children[0]</code>&verbar;<code>children[1]</code>&verbar;<code>(...)</code>&verbar;<code>children[n]</code></td>
+</tr>
+<tr>
+  <td><code>unordered</code></td>
+  <td><code>{ children[0] children[1] (...) children[n] }</code></td>
+</tr>
+</tbody>
+</table>
+
+<p>As you can see, these relations are similar to the ones provided by
+<a href="http://docopt.org">docopt</a>, except for <code>unordered</code>.</p>
+
+<h2 id="example-1-docker-commit">Example 1 - docker commit</h2>
+
+<p>In this first example, a simplified version of the <code>docker commit</code> command
+will be transcribed to a <em>lutline</em>'s <em>specfile</em>.</p>
+
+<pre><code>SPEC
+required:
+    explicit commit
+    unordered:
+        optional:
+            required:
+                exclusive:
+                    explicit -a
+                    explicit --author
+                implicit author
+        optional:
+            required:
+                exclusive:
+                    explicit -c
+                    explicit --change
+                implicit changes
+        optional:
+            explicit --help
+        optional:
+            required:
+                exclusive:
+                    explicit -m
+                    explicit --message
+                implicit message
+        optional:
+            exclusive:
+                explicit -p
+                explicit --pause
+    implicit container
+    optional:
+        implicit repository_tag
+
+USAGE
+Usage:  docker commit [OPTIONS] &lt;container&gt; [&lt;repository&gt;]
+
+DESCRIPTION
+Create a new image from a container's changes
+  (-a | --author) &lt;author&gt;    Author (e.g., "John Hannibal Smith &lt;hannibal@a-team.com&gt;")
+  (-c | --change) &lt;changes&gt;   Apply Dockerfile instruction to the created image
+  --help                      Print usage
+  (-m | --message) &lt;message&gt;  Commit message
+  (-p | --pause)              Pause container during commit
+</code></pre>
+
+<h2 id="future-plans">Future plans</h2>
+
+<p>In the future, the plans are to support a third element where explicit and
+implicit elements are <em>mixed</em> in the same index of <code>argv</code>. For example,
+the pattern <code>--time=&lt;time&gt;</code> can be defined in the <em>specfile</em> as:</p>
+
+<pre><code>mixed:
+    explicit --time=
+    implicit time
+</code></pre>
+
+<p>For example, the pattern <code>(-t | --time)=&lt;clock&gt;</code> can be defined in the
+<em>specfile</em> as:</p>
+
+<pre><code>mixed:
+    exclusive:
+        explicit -t=
+        explicit --time=
+    implicit clock
+</code></pre>
+
+<p>Also, in the future the plans are to support aliases. For example when the
+following element appears on the <em>specfile</em>:</p>
+
+<pre><code>flag time
+</code></pre>
+
+<p>it is converted to:</p>
+
+<pre><code>exclusive:
+    explicit -t
+    explicit --time
+</code></pre>
+
+<p>Or, for example, when the following element appears on the <em>specfile</em>:</p>
+
+<pre><code>option time
+</code></pre>
+
+<p>it is converted to:</p>
+
+<pre><code>exclusive:
+    mixed:
+        exclusive:
+            explicit -t=
+            explicit --time=
+        implicit time
+    required:
+        flag time
+        implicit time
+</code></pre>
+
+<p>Further, in the future the plans are to support the <code>atleastone</code> (at least
+one) relation. In order to accomplish this objective it will be important
+find a way of changing the look-up table (LUT) parser code that will allow to
+perform this functionallity. A possibility is to create a different LUT for
+each <code>atleastone</code> branch.</p>
+
+<p><br></p>
+
+<ul>
+<li>Next: <a href="validation.html">Validating the non-ambiguoty of a pattern</a></li>
+</ul>
+
+<p><br></p>
 
             <footer class="footer">
                 <div style="float:left;"><a href="https://github.com/ffunenga/lutline/blob/master/LICENSE">Check the MIT License</a></div>
-                <div style="float:right;">This page was generated in 2015-11-18 06:20:40</div>
+                <div style="float:right;">This page was generated in 2015-11-19 13:20:07</div>
             </footer>
         </div>
         <script src="js/jquery.min.js"></script>

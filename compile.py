@@ -14,8 +14,8 @@ TEMPLATE_INDEX = """\
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="">
-        <meta name="author" content="">
+        <meta name="description" content="With lutline you generate a look-up table based on a command-line interface specification, and the code needed to access it while looping through argv.">
+        <meta name="author" content="Filipe Funenga">
         <link rel="icon shortcut" href="images/favicon.ico">
         <title>lutline - Efficient command-line interface</title>
         <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -37,24 +37,44 @@ TEMPLATE_INDEX = """\
         <div class="jumbotron">
             <h1>lutline</h1>
             <p class="lead">Parse <code>argv</code> using a fast look-up table generated from your command-line interface specification.</p>
+            <a class="btn btn-default" href="get_started.html" style="margin-top:10px; margin-bottom:10px">Get Started <span class="glyphicon glyphicon-chevron-right"></span></a>
         </div>
 
         <div class="row">
-            <div class="col-md-7">
-              $body
-              <a class="btn btn-default" href="get_started.html" style="margin-top:10px; margin-bottom:10px">Get Started <span class="glyphicon glyphicon-chevron-right"></span></a>
+            <div class="col-md-2">
+                <center>
+                    <span class="glyphicon glyphicon-eye-open" style="font-size: 250%;"></span>
+                </center>
             </div>
-            <div class="col-md-5">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                    <p>Learn more:</p>
-                        <ul>
-                            $toc
-                        </ul>
-                    </div>
-                </div>
-           </div>
+            <div class="col-md-10">
+                $bullet0
+            </div>
         </div>
+        <br>
+        <div class="row">
+            <div class="col-md-2">
+                <center>
+                    <span class="glyphicon glyphicon-tower" style="font-size: 250%;"></span>
+                </center>
+            </div>
+            <div class="col-md-10">
+                $bullet1
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-2">
+                <center>
+                    <span class="glyphicon glyphicon-dashboard" style="font-size: 250%;"></span>
+                </center>
+            </div>
+            <div class="col-md-10">
+                $bullet2
+            </div>
+        </div>
+        <br>
+        $bullet3
+        <br>
         <footer class="footer">
             <div style="float:left;"><a href="https://github.com/ffunenga/lutline/blob/master/LICENSE">Check the MIT License</a></div>
             <div style="float:right;">$date</div>
@@ -82,30 +102,40 @@ TEMPLATE_DOC = """\
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="">
-        <meta name="author" content="">
-        <link rel="icon" href="./images/favicon.ico">
-        <title>lutline - Basics</title>
-        <link href="./css/bootstrap.min.css" rel="stylesheet">
-        <link href="./css/jumbotron-narrow.css" rel="stylesheet">
-        <script src="./js/ie-emulation-modes-warning.js"></script>
+        <meta name="description" content="With lutline you generate a look-up table based on a command-line interface specification, and the code needed to access it while looping through argv.">
+        <meta name="author" content="Filipe Funenga">
+        <link rel="icon shortcut" href="images/favicon.ico">
+        <title>lutline - $title</title>
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/jumbotron-narrow.css" rel="stylesheet">
+        <style>
+            .toc {
+                margin-top: 30px;
+            }
+            @media (min-width: 768px) {
+                .toc {
+                    margin-top: 0px;
+                    float:right;
+                    margin-left:30px;
+                    width: 300px;
+                }
+            }
+        </style>
     </head>
 
     <body>
         <div class="container">
             <div class="header fixed-top clearfix">
                 <ul class="nav nav-pills">
-                    <li role="presentation" style="margin-right:20px;"><a href="index.html"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Back</a></li>
+                    <li role="presentation" style="margin-right:20px;"><a href="index.html"><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span> Home</a></li>
                     <li role="presentation"><h3 class="pull-right" role="presentation">$title</h3></li>
                 </ul>
             </div>
-            <div style="float:right; margin-left:30px; width: 300px;">
+            <div class="toc">
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <p>Contents:</p>
-                        <ul>
-                            $toc
-                        </ul>
+                        $toc
                     </div>
                 </div>
             </div>
@@ -129,27 +159,31 @@ TEMPLATE_DOC = """\
 </html>
 """
 
-with open("docs/get_started.md") as f:
-    basics = f.read()
-with open("docs/index.md") as f:
-    index = f.read()
-headings = [l[2:].strip() for l in basics.splitlines() if l.startswith("##")]
-tags = [h.lower().replace(" ", "-") for h in headings]
-__t = '<li><a href="get_started.html#{tag}">{heading}</a></li>'
-toc = "\n".join(__t.format(tag=t, heading=h) for t, h in zip(tags, headings))
-body = markdown2.markdown(index, extras=['fenced-code-blocks', 'toc'])
+
 generated = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 generated = "This page was generated in " + generated
+
+extras = ['fenced-code-blocks', 'toc', 'cuddled-lists', 'tables']
+
+with open("docs/index.md") as f:
+    index = f.read()
+index = index.split("\n\n")
+bullet0 = markdown2.markdown(index[0], extras=extras)
+bullet1 = markdown2.markdown(index[1], extras=extras)
+bullet2 = markdown2.markdown(index[2], extras=extras)
+bullet3 = markdown2.markdown("\n\n".join(index[3:]), extras=extras)
 doc = string.Template(TEMPLATE_INDEX).safe_substitute(
-        toc=toc, body=body, date=generated)
+    bullet0=bullet0, bullet1=bullet1, bullet2=bullet2, bullet3=bullet3, date=generated)
 with open("index.html", "w") as f:
     f.write(doc)
 
 
+with open("docs/get_started.md") as f:
+    basics = f.read()
 title = "Tutorial - Getting started"
-body = markdown2.markdown(basics, extras=['fenced-code-blocks', 'toc'])
+body = markdown2.markdown(basics, extras=extras)
 doc = string.Template(TEMPLATE_DOC).safe_substitute(
-        title=title, body=body, toc=toc, date=generated)
+        title=title, body=body, toc=body.toc_html, date=generated)
 with open("get_started.html", "w") as f:
     f.write(doc)
 
@@ -157,21 +191,52 @@ with open("get_started.html", "w") as f:
 with open("docs/specfile.md") as f:
     specfile = f.read()
 title = "Command-line interface specification"
-body = markdown2.markdown(specfile, extras=['fenced-code-blocks', 'toc'])
+body = markdown2.markdown(specfile, extras=extras)
+toc = getattr(body, "toc_html", "")
+body = body.replace("<table>", '<table class="table table-striped">')
 doc = string.Template(TEMPLATE_DOC).safe_substitute(
         title=title, body=body, toc=toc, date=generated)
 with open("specfile.html", "w") as f:
     f.write(doc)
 
 
+with open("docs/problem.md") as f:
+    data = f.read()
+title = "The problem of parsing a command-line"
+body = markdown2.markdown(data, extras=extras)
+doc = string.Template(TEMPLATE_DOC).safe_substitute(
+        title=title, body=body, toc=body.toc_html, date=generated)
+with open("problem.html", "w") as f:
+    f.write(doc)
+
+
+with open("docs/solution.md") as f:
+    data = f.read()
+title = "The lutline approach"
+body = markdown2.markdown(data, extras=extras)
+doc = string.Template(TEMPLATE_DOC).safe_substitute(
+        title=title, body=body, toc=body.toc_html, date=generated)
+with open("solution.html", "w") as f:
+    f.write(doc)
+
+
+with open("docs/validation.md") as f:
+    data = f.read()
+title = "Validating the non-ambiguoty of a pattern"
+body = markdown2.markdown(data, extras=extras)
+toc = getattr(body, "toc_html", "")
+body = body.replace("<table>", '<table class="table table-striped">')
+doc = string.Template(TEMPLATE_DOC).safe_substitute(
+        title=title, body=body, toc=toc, date=generated)
+with open("validation.html", "w") as f:
+    f.write(doc)
+
+
 with open("docs/efficient.md") as f:
     efficient = f.read()
 title = "Efficiency analysis"
-headings = [l[2:].strip() for l in efficient.splitlines() if l.startswith("##")]
-tags = [h.lower().replace(" ", "-") for h in headings]
-__t = '<li><a href="efficient.html#{tag}">{heading}</a></li>'
-toc = "\n".join(__t.format(tag=t, heading=h) for t, h in zip(tags, headings))
-body = markdown2.markdown(efficient, extras=['fenced-code-blocks', 'toc', 'tables'])
+body = markdown2.markdown(efficient, extras=extras)
+toc = getattr(body, "toc_html", "")
 body = body.replace("<table>", '<table class="table table-striped">')
 doc = string.Template(TEMPLATE_DOC).safe_substitute(
         title=title, body=body, toc=toc, date=generated)

@@ -4,8 +4,8 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="">
-        <meta name="author" content="">
+        <meta name="description" content="With lutline you generate a look-up table based on a command-line interface specification, and the code needed to access it while looping through argv.">
+        <meta name="author" content="Filipe Funenga">
         <link rel="icon shortcut" href="images/favicon.ico">
         <title>lutline - Efficient command-line interface</title>
         <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -27,36 +27,70 @@
         <div class="jumbotron">
             <h1>lutline</h1>
             <p class="lead">Parse <code>argv</code> using a fast look-up table generated from your command-line interface specification.</p>
+            <a class="btn btn-default" href="get_started.html" style="margin-top:10px; margin-bottom:10px">Get Started <span class="glyphicon glyphicon-chevron-right"></span></a>
         </div>
 
         <div class="row">
-            <div class="col-md-7">
-              <p><em>lutline</em> is <a href="efficient.html">the most efficient</a> command-line
-parser, when compared to other prior solutions.</p>
-
-<p>The <em>lutline</em> method comprises generating a look-up table based on
-<a href="specfile.html">a command-line interface specification</a>, and the code needed
-to access it while looping through <code>argv</code>.</p>
-
-              <a class="btn btn-default" href="get_started.html" style="margin-top:10px; margin-bottom:10px">Get Started <span class="glyphicon glyphicon-chevron-right"></span></a>
+            <div class="col-md-2">
+                <center>
+                    <span class="glyphicon glyphicon-eye-open" style="font-size: 250%;"></span>
+                </center>
             </div>
-            <div class="col-md-5">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                    <p>Learn more:</p>
-                        <ul>
-                            <li><a href="get_started.html#setting-up">Setting up</a></li>
-<li><a href="get_started.html#generating-a-parser">Generating a parser</a></li>
-<li><a href="get_started.html#using-the-parser">Using the parser</a></li>
-<li><a href="get_started.html#detaching">Detaching</a></li>
-                        </ul>
-                    </div>
-                </div>
-           </div>
+            <div class="col-md-10">
+                <p>Parsing a command-line during runtime is supposed to be as simple as forwarding elements from <code>argv</code> to a dictionary-like structure.</p>
+
+            </div>
         </div>
+        <br>
+        <div class="row">
+            <div class="col-md-2">
+                <center>
+                    <span class="glyphicon glyphicon-tower" style="font-size: 250%;"></span>
+                </center>
+            </div>
+            <div class="col-md-10">
+                <p>With <em>lutline</em> you achieve that by generating an incredibly simple spaghetti string and the robotic code to read it while looping through <code>argv</code>.</p>
+
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-2">
+                <center>
+                    <span class="glyphicon glyphicon-dashboard" style="font-size: 250%;"></span>
+                </center>
+            </div>
+            <div class="col-md-10">
+                <p>The command-line interface specification provided is versatile without compromising the efficiency of the generated parser code.</p>
+
+            </div>
+        </div>
+        <br>
+        <h1 id="documentation">Documentation</h1>
+
+<p>How to use <em>lutline</em>:</p>
+
+<ul>
+<li><a href="get_started.html">Tutorial - Getting started</a></li>
+</ul>
+
+<p>Use the following pages to know more about the inner-problems solved by <em>lutline</em>:</p>
+
+<ul>
+<li><a href="problem.html">The problem of parsing a command-line</a></li>
+<li><a href="solution.html">The <em>lutline</em> approach</a>
+<ul>
+<li><a href="specfile.html">Command-line interface specification</a></li>
+<li><a href="validation.html">Validating the non-ambiguoty of a pattern</a></li>
+<li><a href="spaghetti.html">The incredible spaghetti string</a></li>
+</ul></li>
+<li><a href="efficient.html">Efficiency analysis</a></li>
+</ul>
+
+        <br>
         <footer class="footer">
             <div style="float:left;"><a href="https://github.com/ffunenga/lutline/blob/master/LICENSE">Check the MIT License</a></div>
-            <div style="float:right;">This page was generated in 2015-11-18 06:20:40</div>
+            <div style="float:right;">This page was generated in 2015-11-19 13:20:07</div>
         </footer>
 
         <script src="js/jquery.min.js"></script>

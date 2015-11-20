@@ -4,32 +4,45 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="">
-        <meta name="author" content="">
-        <link rel="icon" href="./images/favicon.ico">
-        <title>lutline - Basics</title>
-        <link href="./css/bootstrap.min.css" rel="stylesheet">
-        <link href="./css/jumbotron-narrow.css" rel="stylesheet">
-        <script src="./js/ie-emulation-modes-warning.js"></script>
+        <meta name="description" content="With lutline you generate a look-up table based on a command-line interface specification, and the code needed to access it while looping through argv.">
+        <meta name="author" content="Filipe Funenga">
+        <link rel="icon shortcut" href="images/favicon.ico">
+        <title>lutline - Efficiency analysis</title>
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/jumbotron-narrow.css" rel="stylesheet">
+        <style>
+            .toc {
+                margin-top: 30px;
+            }
+            @media (min-width: 768px) {
+                .toc {
+                    margin-top: 0px;
+                    float:right;
+                    margin-left:30px;
+                    width: 300px;
+                }
+            }
+        </style>
     </head>
 
     <body>
         <div class="container">
             <div class="header fixed-top clearfix">
                 <ul class="nav nav-pills">
-                    <li role="presentation" style="margin-right:20px;"><a href="index.html"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Back</a></li>
+                    <li role="presentation" style="margin-right:20px;"><a href="index.html"><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span> Home</a></li>
                     <li role="presentation"><h3 class="pull-right" role="presentation">Efficiency analysis</h3></li>
                 </ul>
             </div>
-            <div style="float:right; margin-left:30px; width: 300px;">
+            <div class="toc">
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <p>Contents:</p>
                         <ul>
-                            <li><a href="efficient.html#number-of-non-empty-lines-of-code">Number of non-empty lines of code</a></li>
-<li><a href="efficient.html#memory-pollution">Memory pollution</a></li>
-<li><a href="efficient.html#processing-time">Processing time</a></li>
-                        </ul>
+  <li><a href="#number-of-non-empty-lines-of-code">Number of non-empty lines of code</a></li>
+  <li><a href="#memory-pollution">Memory pollution</a></li>
+  <li><a href="#processing-time">Processing time</a></li>
+</ul>
+
                     </div>
                 </div>
             </div>
@@ -157,7 +170,7 @@ the best solution, always showing the lowest levels of resource usage.</p>
 
             <footer class="footer">
                 <div style="float:left;"><a href="https://github.com/ffunenga/lutline/blob/master/LICENSE">Check the MIT License</a></div>
-                <div style="float:right;">This page was generated in 2015-11-18 06:20:40</div>
+                <div style="float:right;">This page was generated in 2015-11-19 13:20:07</div>
             </footer>
         </div>
         <script src="js/jquery.min.js"></script>

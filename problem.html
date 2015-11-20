@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="With lutline you generate a look-up table based on a command-line interface specification, and the code needed to access it while looping through argv.">
+        <meta name="author" content="Filipe Funenga">
+        <link rel="icon shortcut" href="images/favicon.ico">
+        <title>lutline - The problem of parsing a command-line</title>
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/jumbotron-narrow.css" rel="stylesheet">
+        <style>
+            .toc {
+                margin-top: 30px;
+            }
+            @media (min-width: 768px) {
+                .toc {
+                    margin-top: 0px;
+                    float:right;
+                    margin-left:30px;
+                    width: 300px;
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="container">
+            <div class="header fixed-top clearfix">
+                <ul class="nav nav-pills">
+                    <li role="presentation" style="margin-right:20px;"><a href="index.html"><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span> Home</a></li>
+                    <li role="presentation"><h3 class="pull-right" role="presentation">The problem of parsing a command-line</h3></li>
+                </ul>
+            </div>
+            <div class="toc">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <p>Contents:</p>
+                        <ul>
+  <li><a href="#background">Background</a></li>
+  <li><a href="#cli-specification-harr-pattern-description">CLI Specification &hArr; Pattern description</a></li>
+  <li><a href="#ambiguity">Ambiguity</a></li>
+  <li><a href="#order">Order</a></li>
+</ul>
+
+                    </div>
+                </div>
+            </div>
+            <h2 id="background">Background</h2>
+
+<p>Nowadays, most programming languages provide Command-Line Interface (CLI)
+parser modules that allow the developer to implement a CLI specification
+near the beginning of a program's runtime. Besides the standard modules
+that come pre-bundled with the programming language, there are many other
+known third-party modules. Some try to expand the possibilities and options
+available to the developer. Others try to simplify the process for
+developing a CLI specification. Further solutions try to find a balance
+between these two dimensions.</p>
+
+<p>None of the known prior solutions achieves a complexity <code>O(argc)</code>, where
+<code>argc</code> is the lenght of <code>argv</code>, and at the same time enables CLI
+customization of relations between elements. Every time an application
+configured with any of the prior CLI parsers is executed by a user, it
+requires the CLI specification to be parsed and allocated over and over
+again, and only then interpreted. For example, see
+<a href="http://docs.python.org/3/library/argparse.html">argparse</a> where the CLI
+parser is fully instantiated each time you run your application.</p>
+
+<h2 id="cli-specification-harr-pattern-description">CLI Specification &hArr; Pattern description</h2>
+
+<p>A CLI specification is merely a description of a pattern. For example, the
+pattern <code>./app [-f] &lt;input&gt;</code> has one optional flag followed by a mandatory
+argument. This pattern only matches the following two embodiments:</p>
+
+<ol>
+<li><code>./app &lt;input&gt;</code></li>
+<li><code>./app -f &lt;input&gt;</code></li>
+</ol>
+
+<p>This type of decompostion is a great tool to look at CLI specifications from a
+different prespective and find new sub-problems, such as ambiguity or
+order.</p>
+
+<h2 id="ambiguity">Ambiguity</h2>
+
+<p>Any CLI specification with a finite number of embodiments can be decomposed
+in a fashion similar to the previous list. A more complex example can be
+achieved with the following pattern: <code>./app [&lt;filein&gt;] [&lt;fileout&gt;]</code>.
+This pattern matches the following embodiments:</p>
+
+<ol>
+<li><code>./app</code></li>
+<li><code>./app &lt;filein&gt; &lt;fileout&gt;</code></li>
+<li><code>./app &lt;filein&gt;</code></li>
+<li><code>./app &lt;fileout&gt;</code></li>
+</ol>
+
+<p>If you take a closer look to these embodiments, you might be see what is
+happening with numbers 3 and 4. As you can see, they are not different from
+each other and a strict parser cannot correctly guess if <code>./app file.txt</code>
+should set <code>file.txt</code> to <code>filein</code> or to <code>fileout</code>. Hence, in these
+circumstances, the method should consider that this scenario results from
+an ambiguos pattern, and immediately exit with an error message printed for
+the developer's eyes.</p>
+
+<p>This problem relates, mainly, to the fact that arguments are not explicit
+when parsed from <code>argv</code>, as opposed to an option, a flag or a command.</p>
+
+<h2 id="order">Order</h2>
+
+<p>Another problem relates to the order in which the elements appear in a pattern.
+Take look a this simples example: <code>./app [-t] [-o]</code>. Many third party
+modules automaticly <strong><em>dictate</em></strong> that this pattern should be embodied in any of
+the following:</p>
+
+<ol>
+<li><code>./app</code></li>
+<li><code>./app -t</code></li>
+<li><code>./app -o</code></li>
+<li><code>./app -t -o</code></li>
+<li><code>./app -o -t</code> &rarr; Uops!</li>
+</ol>
+
+<p>Embodiment number 5 seems a little bit unexpected. In this case, both
+optional branches <code>[-t]</code> and <code>[-o]</code> where expanded in an unordered fashion.</p>
+
+<p>Lets look at another example, and recall one of the above exemplary
+patterns: <code>./app [-f] &lt;input&gt;</code>. If the unsorted behaviour would be the
+default one, than it would be forcibly possible to embody the pattern
+with: <code>./app &lt;input&gt; -f</code>. There are cases where the developer does not want
+this at all. As a matter of fact, it seems a little counterintuitive to provide your
+<code>argv</code> array like that, when the pattern represented in front of you clearly places
+the optional flag before the mandatory argument.</p>
+
+<p>So, the problem that is presented here can be posed in the following question:</p>
+
+<blockquote>
+  <p>Should the order of the elements presented in a pattern be respected
+  by default or not?</p>
+</blockquote>
+
+<p>The answer defined in this project to this sneaky (but extermely important)
+detail is yes. As you will see on the next pages, the default in <em>lutline</em>
+is to always respect the order of the elements in the pattern, unless the
+developer makes use of a specific operator that defines an unordered set of
+elements in the pattern.</p>
+
+<p><br></p>
+
+<ul>
+<li>Next: <a href="solution.html">The <em>lutline</em> approach</a></li>
+</ul>
+
+<p><br></p>
+
+            <footer class="footer">
+                <div style="float:left;"><a href="https://github.com/ffunenga/lutline/blob/master/LICENSE">Check the MIT License</a></div>
+                <div style="float:right;">This page was generated in 2015-11-19 13:20:07</div>
+            </footer>
+        </div>
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+            ga('create', 'UA-35879263-5', 'auto');
+            ga('send', 'pageview');
+        </script>
+    </body>
+</html>

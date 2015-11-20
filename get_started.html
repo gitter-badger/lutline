@@ -4,33 +4,46 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="">
-        <meta name="author" content="">
-        <link rel="icon" href="./images/favicon.ico">
-        <title>lutline - Basics</title>
-        <link href="./css/bootstrap.min.css" rel="stylesheet">
-        <link href="./css/jumbotron-narrow.css" rel="stylesheet">
-        <script src="./js/ie-emulation-modes-warning.js"></script>
+        <meta name="description" content="With lutline you generate a look-up table based on a command-line interface specification, and the code needed to access it while looping through argv.">
+        <meta name="author" content="Filipe Funenga">
+        <link rel="icon shortcut" href="images/favicon.ico">
+        <title>lutline - Tutorial - Getting started</title>
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/jumbotron-narrow.css" rel="stylesheet">
+        <style>
+            .toc {
+                margin-top: 30px;
+            }
+            @media (min-width: 768px) {
+                .toc {
+                    margin-top: 0px;
+                    float:right;
+                    margin-left:30px;
+                    width: 300px;
+                }
+            }
+        </style>
     </head>
 
     <body>
         <div class="container">
             <div class="header fixed-top clearfix">
                 <ul class="nav nav-pills">
-                    <li role="presentation" style="margin-right:20px;"><a href="index.html"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Back</a></li>
+                    <li role="presentation" style="margin-right:20px;"><a href="index.html"><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span> Home</a></li>
                     <li role="presentation"><h3 class="pull-right" role="presentation">Tutorial - Getting started</h3></li>
                 </ul>
             </div>
-            <div style="float:right; margin-left:30px; width: 300px;">
+            <div class="toc">
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <p>Contents:</p>
                         <ul>
-                            <li><a href="get_started.html#setting-up">Setting up</a></li>
-<li><a href="get_started.html#generating-a-parser">Generating a parser</a></li>
-<li><a href="get_started.html#using-the-parser">Using the parser</a></li>
-<li><a href="get_started.html#detaching">Detaching</a></li>
-                        </ul>
+  <li><a href="#setting-up">Setting up</a></li>
+  <li><a href="#generating-a-parser">Generating a parser</a></li>
+  <li><a href="#using-the-parser">Using the parser</a></li>
+  <li><a href="#detaching">Detaching</a></li>
+</ul>
+
                     </div>
                 </div>
             </div>
@@ -81,15 +94,15 @@ usage: ./superapp [-f &lt;fout&gt;] &lt;fin&gt;
 
 <p>Or you can use the parser from your application.</p>
 
-<pre><code>    $ cat main.py
-    import cli
+<pre><code>$ cat main.py
+import cli
 
-    def main():
-      args = cli.parse()
-      # (...)
+def main():
+  args = cli.parse()
+  # (...)
 
-    if __name__ == "__main__":
-      main()
+if __name__ == "__main__":
+  main()
 </code></pre>
 
 <h2 id="detaching">Detaching</h2>
@@ -98,22 +111,33 @@ usage: ./superapp [-f &lt;fout&gt;] &lt;fin&gt;
 provided by Python itself (in order to grab the <code>argv</code> array). This means that
 from the moment said file is generated, <em>lutline</em> is no longer required in the
 developers system. Basically, <em>lutline</em> is a development-time dependency, as
-opposed to a compilation or run time dependency.</p>
+opposed to a compilation or runtime dependency.</p>
 
 <p>If a virtual environmet is used, detaching <em>lutline</em> is easy to achieve.</p>
 
-<pre><code>$ virtualenv venv
-$ source venv/bin/activate
-(venv)$ pip install lutline
-(venv)$ lutline spec.py
-(venv)$ deactivate
-$ rm -r venv
+<pre><code>$ virtualenv env
+$ source env/bin/activate
+(env)$ pip install lutline
+(env)$ lutline spec.py
+(env)$ deactivate
+$ rm -r env
 # "python main.py" or "python cli.py" still works fine ;)
 </code></pre>
 
+<p><br></p>
+
+<p>If you want to found out more about the inner-problems solved by <em>lutline</em>,
+than following this link:</p>
+
+<ul>
+<li><a href="problem.html">The problem of parsing a command-line</a></li>
+</ul>
+
+<p><br></p>
+
             <footer class="footer">
                 <div style="float:left;"><a href="https://github.com/ffunenga/lutline/blob/master/LICENSE">Check the MIT License</a></div>
-                <div style="float:right;">This page was generated in 2015-11-18 06:20:40</div>
+                <div style="float:right;">This page was generated in 2015-11-19 13:20:07</div>
             </footer>
         </div>
         <script src="js/jquery.min.js"></script>
