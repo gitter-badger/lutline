@@ -1,8 +1,0 @@
-click==5.1
-compago===-versiontools-compago-
-docopt==0.6.2
-lutline==0.1.0
-plac==0.9.1
-PyYAML==3.11
-versiontools==1.9.1
-wheel==0.24.0

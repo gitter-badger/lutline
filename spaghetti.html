@@ -7,7 +7,7 @@
         <meta name="description" content="With lutline you generate a look-up table based on a command-line interface specification, and the code needed to access it while looping through argv.">
         <meta name="author" content="Filipe Funenga">
         <link rel="icon shortcut" href="images/favicon.ico">
-        <title>lutline - The lutline approach
+        <title>lutline - The incredibe spaghetti string
 </title>
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="css/jumbotron-narrow.css" rel="stylesheet">
@@ -31,7 +31,7 @@
             <div class="header fixed-top clearfix">
                 <ul class="nav nav-pills">
                     <li role="presentation" style="margin-right:20px;"><a href="index.html"><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span> Home</a></li>
-                    <li role="presentation"><h3 class="pull-right" role="presentation">The lutline approach
+                    <li role="presentation"><h3 class="pull-right" role="presentation">The incredibe spaghetti string
 </h3></li>
                 </ul>
             </div>
@@ -39,53 +39,11 @@
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <p>Contents:</p>
-                        <ul>
-  <li><a href="#motivation">Motivation</a></li>
-  <li><a href="#workflow">Workflow</a></li>
-</ul>
-
+                        None
                     </div>
                 </div>
             </div>
-            <h2 id="motivation">Motivation</h2>
-
-<p><em>Lutline</em> filters out any wastefull clock cycle from your code. Anything
-that goes besides "<em>forwarding elements from argv to a dictionary-like
-structure</em>" was analysed and limited as much as possible.</p>
-
-<p>By generating a Look-Up Table (LUT), which comprises all the possible
-embodiments of a pattern in a static, readable manner, <em>lutline</em> removes
-the redundant initial stages of parsing and interpreting the developer's
-pattern all together.</p>
-
-<h2 id="workflow">Workflow</h2>
-
-<p>A workflow of the present solution to generate a LUT is divided in three
-stages:</p>
-
-<ol>
-<li>Parsing a Command-Line Interface (CLI) specification and processing a list of all possible embodiments</li>
-<li>Validating the list to assert the ambiguosity of the pattern</li>
-<li>Generating the LUT and the code to read it</li>
-</ol>
-
-<p>After these, the developer can integrate the generated parser in is code
-and execute his/her application, which runs the following intial step:
-matching the user provided <code>argv</code> with an embodiment in the LUT, and
-forwarding elements from <code>argv</code> to a dictionary-like structure accordingly.</p>
-
-<p>As you can see, this workflow separates concerns. A first hard task is parsing
-and interpreting a pattern from the developers mind. Another hard task, that
-does not need to occur at the same time, is matching the pattern with
-the user inputs. <em>Lutine</em> garantees that the second one is as fast as possible.</p>
-
-<p>In order to achieve this workflow, the following sub-problems are solved:</p>
-
-<ul>
-<li><a href="specfile.html">Command-line interface specification</a></li>
-<li><a href="validation.html">Validating the non-ambiguoty of a pattern</a></li>
-<li><a href="spaghetti.html">The incredible spaghetti string</a></li>
-</ul>
+            <p>Text...</p>
 
             <footer class="footer">
                 <div style="float:left;"><a href="https://github.com/ffunenga/lutline/blob/master/LICENSE">Check the MIT License</a></div>
