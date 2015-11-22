@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
 
 
+from . import tools
+
+
 def generate(leafs):
-    exps = u'cf'
+    keylib = tools.KeyLib(leafs)
     lut = []
     for leaf in leafs:
         l = len(leaf)
-        idxs = [i for i, e in enumerate(leaf) if e[0] in exps]
-        rst = (leaf[i] for i in idxs)
-        rst = ''.join((e if k != 'f' else ('-' + e) for k, e in rst))
-        emb = [(e if k != 'f' else ('-' + e)) for k, e in leaf]
+        idxs = [i for i, e in enumerate(leaf) if e[0] == 'explicit']
+        rst = ''.join([str(leaf[i][1]) for i in idxs])
+        emb = [keylib.get(*element) for element in leaf]
         lut.append((l, idxs, rst, emb))
     lut.sort(key=lambda i: i[0])
     return lut

@@ -37,28 +37,6 @@ def parse(argv=sys.argv[1:]):
     sys.exit(__doc__)
 
 
-class Node:
-    def __init__(self, key, child):
-        self.key = key
-        self.child = child if type(child) == str else [Node(*n) for n in child]
-
-    def __str__(self):
-        if self.key == 'f':
-            return "-%s" % self.child
-        elif self.key == 'a':
-            return "<%s>" % self.child
-        elif self.key == 'c':
-            return "%s" % self.child
-        elif self.key == 'opt':
-            return "[" + " ".join(str(c) for c in self.child) + "]"
-        elif self.key == 'exc':
-            return "(" + "|".join(str(c) for c in self.child) + ")"
-        elif self.key == 'req':
-            return "(" + " ".join(str(c) for c in self.child) + ")"
-        elif self.key == 'uns':
-            return "{" + " ".join(str(c) for c in self.child) + "}"
-
-
 def main():
     args = parse()
     dump = args.get("dump")

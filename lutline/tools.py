@@ -2,6 +2,7 @@
 
 
 class Node:
+
     def __init__(self, key, child):
         self.key = key
         self.child = child if type(child) == str else [Node(*n) for n in child]
@@ -23,3 +24,21 @@ class Node:
 
 def lst_to_pattern(lst):
     return " ".join(str(Node(*root)) for root in lst)
+
+
+class KeyLib:
+
+    def __init__(self, leafs):
+        self.implicits = {}
+        self.implicits.update({
+                k: k for leaf in leafs for t, k in leaf
+                if t == 'implicit' and k not in self.implicits})
+        salt = lambda e: '_explicit' if e in self.implicits else ''
+        self.explicits = {}
+        self.explicits.update({
+                k: (k + salt(k)) for leaf in leafs for t, k in leaf
+                if t == 'explicit' and k not in self.explicits})
+        self.router = {'implicit': self.implicits, 'explicit': self.explicits}
+
+    def get(self, type, value):
+        return self.router[type][value]
