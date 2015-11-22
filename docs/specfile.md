@@ -64,7 +64,6 @@ As you can see, these relations are similar to the ones provided by
 In this first example, a simplified version of the `docker commit` command
 will be transcribed to a *lutline*'s *specfile*.
 
-    SPEC
     required:
         explicit commit
         unordered:
