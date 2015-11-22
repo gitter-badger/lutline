@@ -2,6 +2,8 @@
 
 Parse `argv` using a look-up table generated from your command-line interface specification.
 
+Checkout [http://ffunenga.github.io/lutline](http://ffunenga.github.io/lutline) for more information.
+
 ## Install
 
 Install lutline from PyPI with:
@@ -16,7 +18,7 @@ $ pip install lutline
 Test lutline using:
 
 ```
-$ python -m tests
+$ python -m unittest -v
 ```
 
 ### Deployment

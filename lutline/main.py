@@ -1,5 +1,4 @@
-#!/usr/bin/env python
-#-*- coding:utf-8 -*-
+#!/usr/bin/env python3
 
 
 """usage: lutline [-l <language>] [-o <output_file>] <spec_file>
