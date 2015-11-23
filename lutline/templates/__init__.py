@@ -19,16 +19,18 @@ def __read_template(filename):
 def __wrap(n, s):
     npartitions = int(len(s) / float(n)) + 1
     s = [s[i * n:(i * n) + n] for i in range(npartitions)]
-    sep = '"\n%s"' % ((78 - n) * ' ')
+    sep = '"\n"' if n >= 78 else '"\n%s"' % ((78 - n) * ' ')
     return sep.join(s)
 
 
-def serialize(lut):
+def serialize(lut, width=None):
     listify = lambda emb: ';'.join(''.join(e) for e in emb)
     lut_str = [",".join([str(l), ';'.join(str(i)
                          for i in idxs), rst, listify(emb)])
                for l, idxs, rst, emb in lut]
     lut_str = '|'.join(lut_str)
+    if width:
+        return __wrap(width, lut_str)
     return lut_str
 
 

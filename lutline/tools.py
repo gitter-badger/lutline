@@ -15,7 +15,7 @@ class Node:
         elif self.key == 'optional':
             return "[" + " ".join(str(c) for c in self.child) + "]"
         elif self.key == 'exclusive':
-            return "(" + "|".join(str(c) for c in self.child) + ")"
+            return "(" + " | ".join(str(c) for c in self.child) + ")"
         elif self.key == 'required':
             return "(" + " ".join(str(c) for c in self.child) + ")"
         elif self.key == 'unordered':

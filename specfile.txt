@@ -1,0 +1,62 @@
+exclusive:
+    required:
+        exclusive:
+            unordered:
+                optional:
+                    exclusive:
+                        explicit -q
+                        explicit --quiet
+                optional:
+                    exclusive:
+                        explicit -l
+                        explicit --language
+                    implicit language
+                optional:
+                    exclusive:
+                        explicit -o
+                        explicit --output-file
+                    implicit output_file
+                optional:
+                    exclusive:
+                        explicit -w
+                        explicit --wrap
+                    implicit width
+            explicit pattern
+            required:
+                explicit lut
+                optional:
+                    exclusive:
+                        explicit -w
+                        explicit --wrap
+                    implicit width
+        implicit spec_file
+    exclusive:
+        explicit --version
+        explicit --help
+        explicit -h
+
+
+Usage: lutline [OPTIONS] <spec_file>
+       lutline pattern <spec_file>
+       lutline lut [(-w | --wrap) <width>] <spec_file>
+       lutline (--version | -h | --help)
+
+Commands:
+    pattern             Prints the pattern representation from the <spec_file>
+    lut                 Prints the lut string generated from the <spec_file>
+
+Arguments:
+    <spec_file>         Sets the input file with the specification
+
+Options:
+    -q, --quiet         Disables all warnings and verbose messages
+    -w, --wrap <width>  Wraps the created LUT with a maximum line <width>
+    -l, --language <language>
+                        Sets the output programming language. Default is
+                        'python'
+    -o, --output-file <output_file>
+                        Sets the name of the output file to dump the parser
+                        code
+                        Default is 'cli.py'
+    --version           Print version information and exit
+    -h, --help          Print this message and exit

@@ -15,7 +15,13 @@ $ pip install lutline
 ## Development
 
 ### Test
-Test lutline using:
+
+Run lutline command-line tool without `setup.py`:
+```
+$ python -m lutline.main
+```
+
+Run tests:
 
 ```
 $ python -m unittest -v

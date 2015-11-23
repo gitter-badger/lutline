@@ -4,8 +4,8 @@
 def split_sections(spec_str):
     # Note: This function might be improved in the future using the re module
     join = lambda ls: "\n".join(ls).strip()
-    lines = spec_str.splitlines()
-    __gen = (i for i, l in enumerate(lines) if l.startswith("usage:"))
+    lines = spec_str.strip().splitlines()
+    __gen = (i for i, l in enumerate(lines) if l.lower().startswith("usage:"))
     ini = next(__gen, None)
     p = join(lines if ini == None else lines[:ini])
     p = p if len(p) else None
