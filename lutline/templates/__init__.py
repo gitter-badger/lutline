@@ -34,36 +34,37 @@ def serialize(lut, width=None):
     return lut_str
 
 
-def export(usage, lut, language="python"):
+def export(lut, usage, description, language='python', width=None):
     lut_str = serialize(lut)
     if language == "python":
         template = __read_template("template.py")
-        lut_str = __wrap(67, lut_str)
+        lut_str = __wrap(67 if width == None else width, lut_str)
         rst = template.replace("{{usage}}", usage)
+        rst = rst.replace("{{description}}", description)
         rst = rst.replace("{{lut}}", lut_str)
-    elif language == "c":
-        template = __read_template("template.c")
-        usage = __wrap(55, usage)
-        lut_str = __wrap(59, lut_str)
-        rst = template.replace("{{usage}}", usage)
-        rst = rst.replace("{{lut}}", lut_str)
-
-        args = list(set(e for l in lut for e in l[-1]))
-        lbls = [a.replace("-", "_") for a in args]
-
-        __s = "\n    "
-        arguments = __s + __s.join("char *%s;" % l for l in lbls)
-        rst = rst.replace("{{arguments}}", arguments)
-
-        __s = "\n            "
-        __t = 'if (!strcmp(buf0, "{a}"))\n                cli->{l} = argv[i];'
-        comparers = __s.join(__t.format(l=l, a=a) for l, a in zip(lbls, args))
-        rst = rst.replace("{{comparers}}", __s + comparers)
-
-        __s = "\n    "
-        __t = 'printf("cli.{l} = \'%s\'\\n", cli.{l});'
-        dumpers = __s + __s.join(__t.format(l=l) for l in lbls)
-        rst = rst.replace("{{dumpers}}", dumpers)
+    #elif language == "c":
+    #    template = __read_template("template.c")
+    #    usage = __wrap(55, usage)
+    #    lut_str = __wrap(59, lut_str)
+    #    rst = template.replace("{{usage}}", usage)
+    #    rst = rst.replace("{{lut}}", lut_str)
+    #
+    #    args = list(set(e for l in lut for e in l[-1]))
+    #    lbls = [a.replace("-", "_") for a in args]
+    #
+    #    __s = "\n    "
+    #    arguments = __s + __s.join("char *%s;" % l for l in lbls)
+    #    rst = rst.replace("{{arguments}}", arguments)
+    #
+    #    __s = "\n            "
+    #    __t = 'if (!strcmp(buf0, "{a}"))\n                cli->{l} = argv[i];'
+    #    comparers = __s.join(__t.format(l=l, a=a) for l, a in zip(lbls, args))
+    #    rst = rst.replace("{{comparers}}", __s + comparers)
+    #
+    #    __s = "\n    "
+    #    __t = 'printf("cli.{l} = \'%s\'\\n", cli.{l});'
+    #    dumpers = __s + __s.join(__t.format(l=l) for l in lbls)
+    #    rst = rst.replace("{{dumpers}}", dumpers)
     else:
         exit("Programming language is not recognized.")
     return rst

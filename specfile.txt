@@ -35,7 +35,6 @@ exclusive:
         explicit --help
         explicit -h
 
-
 Usage: lutline [OPTIONS] <spec_file>
        lutline pattern <spec_file>
        lutline lut [(-w | --wrap) <width>] <spec_file>
