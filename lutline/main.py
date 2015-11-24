@@ -29,7 +29,7 @@ Arguments:
 
 Options:
     -q, --quiet         Disables all warnings and verbose messages
-    -w, --wrap <width>  Wraps the created LUT with a maximum line <width>
+    -w, --wrap <width>  Sets the maximum line <width> of the created LUT
     -l, --language <language>
                         Sets the output programming language. Default is
                         'python'
@@ -2049,6 +2049,7 @@ def main():
         print(tools.lst_to_pattern([pattern]))
         return
     leafs = embodiments.process(pattern)
+    #print("#embodiments:", len(leafs))
     lutable = lut.generate(leafs)
     if not any(config.get(k) for k in ["-q", "--quiet"]):
         if not validate.is_ok(lutable):
