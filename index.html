@@ -18,8 +18,8 @@
                 <nav>
                     <a class="btn btn-success" role="button" href="https://github.com/ffunenga/lutline"><span class="glyphicon glyphicon-console" aria-hidden="true"></span> View on GitHub</a>
                     <ul class="nav nav-pills pull-right">
-                        <li role="presentation"><a href="https://github.com/ffunenga/lutline/zipball/master" class="btn"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Download as .zip</a></li>
-                        <li role="presentation"><a href="https://github.com/ffunenga/lutline/tarball/master" class="btn"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Download as .tar.gz</a></li>
+                        <li role="presentation"><a href="https://github.com/ffunenga/lutline/zipball/master" class="btn"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Download</a></li>
+                        <li role="presentation"><a href="#documentation" class="btn"><span class="glyphicon glyphicon-book"></span> Docs</a></li>
                     </ul>
                 </nav>
             </div>
@@ -37,7 +37,7 @@
                 </center>
             </div>
             <div class="col-md-10">
-                <p>Parsing a command-line during runtime is supposed to be as simple as forwarding elements from <code>argv</code> to a dictionary-like structure.</p>
+                <p>Parsing a command-line during run-time is supposed to be as simple as forwarding elements from <code>argv</code> to a dictionary-like structure.</p>
 
             </div>
         </div>
@@ -49,7 +49,7 @@
                 </center>
             </div>
             <div class="col-md-10">
-                <p>With <em>lutline</em> you achieve that by generating an incredibly simple spaghetti string and the robotic code to read it while looping through <code>argv</code>.</p>
+                <p>With <em>lutline</em> you achieve that by generating a look-up table and the robotic code to read it while looping through <code>argv</code>.</p>
 
             </div>
         </div>
@@ -61,7 +61,7 @@
                 </center>
             </div>
             <div class="col-md-10">
-                <p>The command-line interface specification provided is versatile without compromising the efficiency of the generated parser code.</p>
+                <p>The pattern customization available in <em>lutline</em> provides great versatility without compromising the efficiency of the generated parser code.</p>
 
             </div>
         </div>
@@ -77,20 +77,15 @@
 <p>Use the following pages to know more about the inner-problems solved by <em>lutline</em>:</p>
 
 <ul>
-<li><a href="problem.html">The problem of parsing a command-line</a></li>
-<li><a href="solution.html">The <em>lutline</em> approach</a>
-<ul>
+<li><a href="background.html">Parsing a command-line</a></li>
+<li><a href="solution.html">The <em>lutline</em> approach</a></li>
 <li><a href="specfile.html">Command-line interface specification</a></li>
-<li><a href="validation.html">Validating the non-ambiguoty of a pattern</a></li>
-<li><a href="spaghetti.html">The incredible spaghetti string</a></li>
-</ul></li>
-<li><a href="efficient.html">Efficiency analysis</a></li>
 </ul>
 
         <br>
         <footer class="footer">
             <div style="float:left;"><a href="https://github.com/ffunenga/lutline/blob/master/LICENSE">Check the MIT License</a></div>
-            <div style="float:right;">This page was generated in 2015-11-20 19:58:50</div>
+            <div style="float:right;">This page was generated in 2015-11-24 20:16:00</div>
         </footer>
 
         <script src="js/jquery.min.js"></script>
@@ -101,7 +96,7 @@
                     m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
                     })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
             ga('create', 'UA-35879263-5', 'auto');
-            ga('send', 'pageview');
+            ga('send', 'pageview', 'index.html');
         </script>
     </body>
 </html>

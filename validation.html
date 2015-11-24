@@ -40,69 +40,13 @@
                     <div class="panel-body">
                         <p>Contents:</p>
                         <ul>
-  <li><a href="#generating-all-of-the-embodiments">Generating all of the embodiments</a></li>
   <li><a href="#validating-the-ambiguity-of-a-list-of-embodiments">Validating the ambiguity of a list of embodiments</a></li>
 </ul>
 
                     </div>
                 </div>
             </div>
-            <h2 id="generating-all-of-the-embodiments">Generating all of the embodiments</h2>
-
-<blockquote>
-  <p>This sub-problem is dealt with in the module <a href="https://github.com/ffunenga/lutline/blob/master/lutline/embodiments.py">lutline.embodiments</a>.</p>
-</blockquote>
-
-<p>The at least one embodiment related to a pattern can be generated with, for
-example, the
-<a href="http://en.wikipedia.org/wiki/Depth-first_search">Depth-First Search</a>
-method. If a tree structure is used where each node is a pattern, and its
-children is the resulting pattern after a single expansion, than the leaf
-nodes are the embodiments of the pattern. For example, the following
-pattern <code>app.py (-i [-t] &lt;input_file&gt;) | &lt;output_file&gt;</code> can be decomposed in the
-following tree.</p>
-
-<table class="table table-striped">
-<thead>
-<tr>
-  <th>Node</th>
-  <th>Pattern</th>
-  <th>Children</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td>0</td>
-  <td><code>app.py (-i [-t] &lt;input_file&gt;)</code>&verbar;<code>&lt;output_file&gt;</code></td>
-  <td><code>[1, 2]</code></td>
-</tr>
-<tr>
-  <td>1</td>
-  <td><code>app.py -i [-t] &lt;input_file&gt;</code></td>
-  <td><code>[3, 4]</code></td>
-</tr>
-<tr>
-  <td>2</td>
-  <td><code>app.py &lt;output_file&gt;</code></td>
-  <td><code>None</code></td>
-</tr>
-<tr>
-  <td>3</td>
-  <td><code>app.py -i -t &lt;input_file&gt;</code></td>
-  <td><code>None</code></td>
-</tr>
-<tr>
-  <td>4</td>
-  <td><code>app.py -i &lt;input_file&gt;</code></td>
-  <td><code>None</code></td>
-</tr>
-</tbody>
-</table>
-
-<p>As you can see, the leaf nodes, corresponding to the rows 2, 3 and 4, list
-out all the possible embodiments of the pattern.</p>
-
-<h2 id="validating-the-ambiguity-of-a-list-of-embodiments">Validating the ambiguity of a list of embodiments</h2>
+            <h2 id="validating-the-ambiguity-of-a-list-of-embodiments">Validating the ambiguity of a list of embodiments</h2>
 
 <blockquote>
   <p>This sub-problem is dealt with in the module <a href="https://github.com/ffunenga/lutline/blob/master/lutline/validate.py">lutline.validate</a>.</p>
@@ -116,9 +60,10 @@ number of embodiments to analyze.</p>
 
             <footer class="footer">
                 <div style="float:left;"><a href="https://github.com/ffunenga/lutline/blob/master/LICENSE">Check the MIT License</a></div>
-                <div style="float:right;">This page was generated in 2015-11-20 19:58:50</div>
+                <div style="float:right;">This page was generated in 2015-11-24 16:44:09</div>
             </footer>
         </div>
+
         <script src="js/jquery.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
         <script>
@@ -127,7 +72,7 @@ number of embodiments to analyze.</p>
                     m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
                     })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
             ga('create', 'UA-35879263-5', 'auto');
-            ga('send', 'pageview');
+            ga('send', 'pageview', 'validation.html');
         </script>
     </body>
 </html>

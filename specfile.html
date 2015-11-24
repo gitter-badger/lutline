@@ -55,15 +55,30 @@
 <p>The <em>specfile</em> is a simple text file divided in three parts:</p>
 
 <ul>
-<li>a Commad-Line Interface (CLI) specification</li>
+<li>a Command-Line Interface (CLI) specification</li>
 <li>(optional) a usage message</li>
-<li>(optional) a description of the usage message</li>
+<li>(optional) a description message</li>
 </ul>
 
 <p>The CLI specification is the core of the <em>specfile</em> and is where the developer
 provides the pattern that is to be implemented by the CLI parser. This part of
 the <em>specfile</em> describes a tree where each leaf is an <em>element</em> and each
 branch is a <em>relation</em>.</p>
+
+<p>The <em>lutline</em> parser assumes that the <em>specfile</em> first describes the CLI
+specification and then, optionally, describes the usage and description
+messages, where the first line of that block starts with the sub-string
+<code>usage:</code>. This search operation is not sensible to the capitalization
+(e.g. <code>Usage</code> and <code>USAGE</code> also match).</p>
+
+<p>If no line in the <em>specfile</em> verifies
+<code>line.lower().startswith('usage:')</code>, than the entire file's
+contents are identified as the CLI specification. On the contrary, if one
+line verifies that condition, than the contents starting from that line are
+considered to describe the usage and description messages.</p>
+
+<p>The optional description message starts from the first line without any
+indentation after the <code>usage:</code> line.</p>
 
 <h2 id="elements">Elements</h2>
 
@@ -94,14 +109,9 @@ branch is a <em>relation</em>.</p>
 </tbody>
 </table>
 
-<p>The explicit element is a boolean variable that appears in the dictionary
-like structure returned from the CLI parsing operation, with a key equal to
-its label. True means that the elements exists in <code>argv</code>.</p>
-
-<p>The implicit element is a string variable that appears in the dictionary
-like structure returned from the CLI parsing operation, with a key equal to
-its label. This element is not directly recognizable from <code>argv</code> since
-the user places a string value in there, instead of the label.</p>
+<p>An explicit element is represented in <code>argv</code> with its label. On the contrary,
+an implicit element is not directly recognizable in <code>argv</code>, since
+the user places a string value in there, instead of its label.</p>
 
 <h2 id="relations">Relations</h2>
 
@@ -125,7 +135,7 @@ the user places a string value in there, instead of the label.</p>
 </tr>
 <tr>
   <td><code>exclusive</code></td>
-  <td><code>children[0]</code>&verbar;<code>children[1]</code>&verbar;<code>(...)</code>&verbar;<code>children[n]</code></td>
+  <td><code>( children[0]</code>&verbar;<code>children[1]</code>&verbar;<code>(...)</code>&verbar;<code>children[n] )</code></td>
 </tr>
 <tr>
   <td><code>unordered</code></td>
@@ -134,16 +144,87 @@ the user places a string value in there, instead of the label.</p>
 </tbody>
 </table>
 
-<p>As you can see, these relations are similar to the ones provided by
-<a href="http://docopt.org">docopt</a>, except for <code>unordered</code>.</p>
+<p>As you can see, these relations are common, except for <code>unordered</code>.</p>
+
+<p><span class="label label-success">Required</span> Defines an ordered set of
+branches or elements. This relation has one embodiment: its children in the
+same order they appear in the pattern representation. For example, the
+following CLI specification:</p>
+
+<pre><code>required:
+    explicit -f
+    implicit input_file
+
+Usage: app.py (-f &lt;input_file&gt;)
+</code></pre>
+
+<p>has the following embodiment:</p>
+
+<ol>
+<li><code>app.py -f &lt;input_file&gt;</code></li>
+</ol>
+
+<p><span class="label label-success">Optional</span> Equivalent to a <code>required</code>
+branch with two possible embodiments: either with the normal <code>required</code>
+embodiment, OR by not existing in the parent branch. For example, the
+following CLI specification:</p>
+
+<pre><code>optional:
+    explicit -f
+    implicit input_file
+
+Usage: app.py [-f &lt;input_file&gt;]
+</code></pre>
+
+<p>has the following embodiments:</p>
+
+<ol>
+<li><code>app.py -f &lt;input_file&gt;</code></li>
+<li><code>app.py</code></li>
+</ol>
+
+<p><span class="label label-success">Exclusive</span> Defines a set of branches
+or elements that is embodied one child at a time. For example, the following
+CLI specification:</p>
+
+<pre><code>exclusive:
+    explicit -f
+    implicit input_file
+
+Usage: app.py (-f | &lt;input_file&gt;)
+</code></pre>
+
+<p>has the following embodiments:</p>
+
+<ol>
+<li><code>app.py -f</code></li>
+<li><code>app.py &lt;input_file&gt;</code></li>
+</ol>
+
+<p><span class="label label-success">Unordered</span> Defines a set of branches
+or elements that is embodied by each permutation of the children. For
+example, the following CLI specification:</p>
+
+<pre><code>unordered:
+    explicit -f
+    implicit input_file
+
+Usage: app.py {-f | &lt;input_file&gt;}
+</code></pre>
+
+<p>has the following embodiments:</p>
+
+<ol>
+<li><code>app.py -f &lt;input_file&gt;</code></li>
+<li><code>app.py &lt;input_file&gt; -f</code></li>
+</ol>
 
 <h2 id="example-1-docker-commit">Example 1 - docker commit</h2>
 
 <p>In this first example, a simplified version of the <code>docker commit</code> command
 will be transcribed to a <em>lutline</em>'s <em>specfile</em>.</p>
 
-<pre><code>SPEC
-required:
+<pre><code>required:
     explicit commit
     unordered:
         optional:
@@ -174,10 +255,8 @@ required:
     optional:
         implicit repository_tag
 
-USAGE
 Usage:  docker commit [OPTIONS] &lt;container&gt; [&lt;repository&gt;]
 
-DESCRIPTION
 Create a new image from a container's changes
   (-a | --author) &lt;author&gt;    Author (e.g., "John Hannibal Smith &lt;hannibal@a-team.com&gt;")
   (-c | --change) &lt;changes&gt;   Apply Dockerfile instruction to the created image
@@ -186,13 +265,19 @@ Create a new image from a container's changes
   (-p | --pause)              Pause container during commit
 </code></pre>
 
+<p>The <code>Usage:</code> marker shows a simplified pattern using the <code>[OPTIONS]</code>
+representation. This pattern code entails that any of the options can be
+optionally placed at that location in any order. This type of relation
+greatly increases the number of embodiments.</p>
+
 <h2 id="future-plans">Future plans</h2>
 
-<p>In the future, the plans are to support a third element where explicit and
+<p><span class="label label-primary">TODO</span>
+In the future, the plans are to support a third element where explicit and
 implicit elements are <em>mixed</em> in the same index of <code>argv</code>. For example,
 the pattern <code>--time=&lt;time&gt;</code> can be defined in the <em>specfile</em> as:</p>
 
-<pre><code>mixed:
+<pre><code>element:
     explicit --time=
     implicit time
 </code></pre>
@@ -200,14 +285,15 @@ the pattern <code>--time=&lt;time&gt;</code> can be defined in the <em>specfile<
 <p>For example, the pattern <code>(-t | --time)=&lt;clock&gt;</code> can be defined in the
 <em>specfile</em> as:</p>
 
-<pre><code>mixed:
+<pre><code>element:
     exclusive:
         explicit -t=
         explicit --time=
     implicit clock
 </code></pre>
 
-<p>Also, in the future the plans are to support aliases. For example when the
+<p><span class="label label-primary">TODO</span>
+Also, in the future the plans are to support aliases. For example when the
 following element appears on the <em>specfile</em>:</p>
 
 <pre><code>flag time
@@ -228,7 +314,7 @@ following element appears on the <em>specfile</em>:</p>
 <p>it is converted to:</p>
 
 <pre><code>exclusive:
-    mixed:
+    element:
         exclusive:
             explicit -t=
             explicit --time=
@@ -238,25 +324,19 @@ following element appears on the <em>specfile</em>:</p>
         implicit time
 </code></pre>
 
-<p>Further, in the future the plans are to support the <code>atleastone</code> (at least
-one) relation. In order to accomplish this objective it will be important
+<p><span class="label label-primary">TODO</span>
+Further, in the future the plans are to support the <code>atleastone</code> ("at least
+one") relation. In order to accomplish this objective it will be important
 find a way of changing the look-up table (LUT) parser code that will allow to
-perform this functionallity. A possibility is to create a different LUT for
+perform this functionality. A possibility is to create a different LUT for
 each <code>atleastone</code> branch.</p>
-
-<p><br></p>
-
-<ul>
-<li>Next: <a href="validation.html">Validating the non-ambiguoty of a pattern</a></li>
-</ul>
-
-<p><br></p>
 
             <footer class="footer">
                 <div style="float:left;"><a href="https://github.com/ffunenga/lutline/blob/master/LICENSE">Check the MIT License</a></div>
-                <div style="float:right;">This page was generated in 2015-11-20 19:58:50</div>
+                <div style="float:right;">This page was generated in 2015-11-24 20:16:00</div>
             </footer>
         </div>
+
         <script src="js/jquery.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
         <script>
@@ -265,7 +345,7 @@ each <code>atleastone</code> branch.</p>
                     m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
                     })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
             ga('create', 'UA-35879263-5', 'auto');
-            ga('send', 'pageview');
+            ga('send', 'pageview', 'specfile.html');
         </script>
     </body>
 </html>

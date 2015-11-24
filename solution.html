@@ -40,58 +40,58 @@
                     <div class="panel-body">
                         <p>Contents:</p>
                         <ul>
-  <li><a href="#motivation">Motivation</a></li>
   <li><a href="#workflow">Workflow</a></li>
 </ul>
 
                     </div>
                 </div>
             </div>
-            <h2 id="motivation">Motivation</h2>
-
-<p><em>Lutline</em> filters out any wastefull clock cycle from your code. Anything
-that goes besides "<em>forwarding elements from argv to a dictionary-like
-structure</em>" was analysed and limited as much as possible.</p>
+            <p><em>Lutline</em> filters out any wasteful clock cycle from your application.
+Anything that goes besides "<em>forwarding elements from <code>argv</code> to a
+dictionary-like structure</em>" was carefully analyzed and limited.</p>
 
 <p>By generating a Look-Up Table (LUT), which comprises all the possible
-embodiments of a pattern in a static, readable manner, <em>lutline</em> removes
-the redundant initial stages of parsing and interpreting the developer's
-pattern all together.</p>
+embodiments of a pattern in a static, readable manner, <em>lutline</em> removes the
+redundant initial stages of parsing and heavy instantiating the pattern all
+together.</p>
 
 <h2 id="workflow">Workflow</h2>
 
-<p>A workflow of the present solution to generate a LUT is divided in three
-stages:</p>
+<p>A workflow of the present solution to generate a LUT is divided in the
+following stages:</p>
 
 <ol>
-<li>Parsing a Command-Line Interface (CLI) specification and processing a list of all possible embodiments</li>
-<li>Validating the list to assert the ambiguosity of the pattern</li>
-<li>Generating the LUT and the code to read it</li>
+<li>Parsing a Command-Line Interface (CLI) specification</li>
+<li>Processing a list of all possible embodiments</li>
+<li>Generating the LUT</li>
+<li>Validating the non-ambiguity of the LUT</li>
 </ol>
 
-<p>After these, the developer can integrate the generated parser in is code
-and execute his/her application, which runs the following intial step:
-matching the user provided <code>argv</code> with an embodiment in the LUT, and
-forwarding elements from <code>argv</code> to a dictionary-like structure accordingly.</p>
+<p>After these, you can import the generated parser to your application which,
+when executed, only performs one operation: matching the input from <code>argv</code> with
+your pattern. After that, the elements provided by the user through <code>argv</code> are
+returned in a dictionary.</p>
 
-<p>As you can see, this workflow separates concerns. A first hard task is parsing
-and interpreting a pattern from the developers mind. Another hard task, that
-does not need to occur at the same time, is matching the pattern with
-the user inputs. <em>Lutine</em> garantees that the second one is as fast as possible.</p>
+<p>As you can see, this workflow separates concerns. A first hard task is
+parsing and structuring a pattern from your brain into a data structure.
+Another different hard task, is matching a user generated <code>argv</code> against
+your pattern. <em>Lutine</em> focuses on making the second one as lightweight as
+possible.</p>
 
-<p>In order to achieve this workflow, the following sub-problems are solved:</p>
+<p><br></p>
 
 <ul>
-<li><a href="specfile.html">Command-line interface specification</a></li>
-<li><a href="validation.html">Validating the non-ambiguoty of a pattern</a></li>
-<li><a href="spaghetti.html">The incredible spaghetti string</a></li>
+<li>Next: <a href="specfile.html">Command-line interface specification</a></li>
 </ul>
+
+<p><br></p>
 
             <footer class="footer">
                 <div style="float:left;"><a href="https://github.com/ffunenga/lutline/blob/master/LICENSE">Check the MIT License</a></div>
-                <div style="float:right;">This page was generated in 2015-11-20 19:58:50</div>
+                <div style="float:right;">This page was generated in 2015-11-24 20:16:00</div>
             </footer>
         </div>
+
         <script src="js/jquery.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
         <script>
@@ -100,7 +100,7 @@ the user inputs. <em>Lutine</em> garantees that the second one is as fast as pos
                     m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
                     })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
             ga('create', 'UA-35879263-5', 'auto');
-            ga('send', 'pageview');
+            ga('send', 'pageview', 'solution.html');
         </script>
     </body>
 </html>

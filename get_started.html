@@ -51,61 +51,90 @@
             </div>
             <h2 id="setting-up">Setting up</h2>
 
-<p>Install <em>lutline</em> in your Python environment, preferably in a virtualenv.</p>
+<p>Install <em>lutline</em> in your Python environment using <a href="http://pip.readthedocs.org/">pip</a>.</p>
 
 <pre><code>$ pip install lutline
 </code></pre>
 
 <h2 id="generating-a-parser">Generating a parser</h2>
 
-<p>Create a <code>spec.py</code> file. (More details <a href="specfile.html">here</a>)</p>
+<p>Start by creating a simple <code>specfile.txt</code>, where you describe your
+Command-Line Interface (CLI) specification, a usage message and a
+description of your CLI.</p>
 
-<pre><code>$ cat spec.py
-spec = [
-  ['opt', [['f', 'f'],
-           ['a', 'fout']]
-  ],
-  ['a', 'fin']
-]
+<pre><code>$ cat specfile.txt
+required:
+    optional:
+        explicit -f
+        implicit fout
+    implicit fin
+
+Usage: app.py [-f &lt;fout&gt;] &lt;fin&gt;
+
+This application processes the information in &lt;fin&gt; and outputs the results
+to a new file called &lt;fout&gt;. If &lt;fout&gt; is not provided, the default value
+will be 'output.txt'
+
+Arguments:
+    &lt;fin&gt;       The input filename
+
+Options:
+    -f &lt;fout&gt;   The output filename. Default value is 'output.txt'
 </code></pre>
 
-<p>The <code>cli.py</code> module can be generated using the <em>lutline</em> command-line tool as
-follows (see its USAGE message for more information).</p>
+<p>You can find out more details about the above format in <a href="specfile.html">this
+page</a>. Basically, once <em>lutline</em> finds the first occurrence of
+<code>usage:</code> it simply copy/paste's the text following that marker, to the right
+locations in a template. The CLI specification that precedes that marker
+describes the pattern that you want to parse. As you can see, it is easy to
+draft and very versatile.</p>
+
+<p>In this tutorial, a Python module will be generated based on that
+<code>specfile.txt</code>. The default output filename is <code>cli.py</code>, which is fine for
+most scenarios. The module can be generated using the <em>lutline</em> command-line
+tool as follows (see its USAGE message for more information):</p>
 
 <pre><code>$ ls
-main.py  spec.py
-$ lutline spec.py
+specfile.txt
+$ lutline specfile.txt
 $ ls
-cli.py  main.py  spec.py
+cli.py  specfile.txt
 </code></pre>
+
+<p>And now you have a CLI parser with a customized look-up table (LUT) that you
+can use in your application.</p>
 
 <h2 id="using-the-parser">Using the parser</h2>
 
-<p>The <code>cli.py</code> file comprises a look-up table specifically tailored to the
-specification provided by the <code>spec.py</code> file, and a function to match the
-<code>argv</code> array against the LUT. The cli implemented can now be tested directly or
-through the main application.</p>
+<p>You can now test the generated parser either directly or through your
+application. For example, this is what it looks like to use the parser directly
+for testing purposes.</p>
 
 <pre><code>$ python cli.py hello.txt
 {'fin': 'hello.txt'}
 $ python cli.py -f bye.txt hello.txt
-{'-f': 'f', 'fout': 'bye.txt', 'fin': 'hello.txt'}
+{'-f': '-f', 'fout': 'bye.txt', 'fin': 'hello.txt'}
 $ python cli.py --this-option-is-unknown
-usage: ./superapp [-f &lt;fout&gt;] &lt;fin&gt;
+Usage: app.py [-f &lt;fout&gt;] &lt;fin&gt;
 </code></pre>
 
-<p>Or you can use the parser from your application.</p>
+<p>And this is what it looks like to use the parser from your application:</p>
 
 <pre><code>$ cat main.py
 import cli
 
 def main():
   args = cli.parse()
+  fout = args.get("fout", "output.txt")
   # (...)
 
 if __name__ == "__main__":
   main()
 </code></pre>
+
+<p>The important thing to know about how to use the generated parser in <code>cli.py</code>
+is that somewhere inside there is a function called <code>parse()</code> that returns
+a dictionary-like structure with the values provided through <code>argv</code>.</p>
 
 <h2 id="detaching">Detaching</h2>
 
@@ -113,9 +142,9 @@ if __name__ == "__main__":
 provided by Python itself (in order to grab the <code>argv</code> array). This means that
 from the moment said file is generated, <em>lutline</em> is no longer required in the
 developers system. Basically, <em>lutline</em> is a development-time dependency, as
-opposed to a compilation or runtime dependency.</p>
+opposed to a compilation or run-time dependency.</p>
 
-<p>If a virtual environmet is used, detaching <em>lutline</em> is easy to achieve.</p>
+<p>If a virtual environment is used, detaching <em>lutline</em> is easy to achieve.</p>
 
 <pre><code>$ virtualenv env
 $ source env/bin/activate
@@ -132,16 +161,17 @@ $ rm -r env
 than following this link:</p>
 
 <ul>
-<li><a href="problem.html">The problem of parsing a command-line</a></li>
+<li><a href="problem.html">Parsing a command-line</a></li>
 </ul>
 
 <p><br></p>
 
             <footer class="footer">
                 <div style="float:left;"><a href="https://github.com/ffunenga/lutline/blob/master/LICENSE">Check the MIT License</a></div>
-                <div style="float:right;">This page was generated in 2015-11-20 19:58:50</div>
+                <div style="float:right;">This page was generated in 2015-11-24 20:16:00</div>
             </footer>
         </div>
+
         <script src="js/jquery.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
         <script>
@@ -150,7 +180,7 @@ than following this link:</p>
                     m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
                     })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
             ga('create', 'UA-35879263-5', 'auto');
-            ga('send', 'pageview');
+            ga('send', 'pageview', 'get_started.html');
         </script>
     </body>
 </html>
