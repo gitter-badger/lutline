@@ -5,7 +5,6 @@ import datetime
 import string
 import markdown2
 import os
-import shutil
 import glob
 
 
@@ -30,8 +29,8 @@ TEMPLATE_INDEX = """\
                 <nav>
                     <a class="btn btn-success" role="button" href="https://github.com/ffunenga/lutline"><span class="glyphicon glyphicon-console" aria-hidden="true"></span> View on GitHub</a>
                     <ul class="nav nav-pills pull-right">
-                        <li role="presentation"><a href="https://github.com/ffunenga/lutline/zipball/master" class="btn"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Download as .zip</a></li>
-                        <li role="presentation"><a href="https://github.com/ffunenga/lutline/tarball/master" class="btn"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Download as .tar.gz</a></li>
+                        <li role="presentation"><a href="https://github.com/ffunenga/lutline/zipball/master" class="btn"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Download</a></li>
+                        <li role="presentation"><a href="#documentation" class="btn"><span class="glyphicon glyphicon-book"></span> Docs</a></li>
                     </ul>
                 </nav>
             </div>
@@ -90,7 +89,7 @@ TEMPLATE_INDEX = """\
                     m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
                     })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
             ga('create', 'UA-35879263-5', 'auto');
-            ga('send', 'pageview');
+            ga('send', 'pageview', 'index.html');
         </script>
     </body>
 </html>
@@ -147,6 +146,7 @@ TEMPLATE_DOC = """\
                 <div style="float:right;">$date</div>
             </footer>
         </div>
+
         <script src="js/jquery.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
         <script>
@@ -155,18 +155,16 @@ TEMPLATE_DOC = """\
                     m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
                     })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
             ga('create', 'UA-35879263-5', 'auto');
-            ga('send', 'pageview');
+            ga('send', 'pageview', '{{ path }}');
         </script>
     </body>
 </html>
 """
 
-if os.path.exists("_build"):
-    try:
-        os.rmdir("_build")
-    except OSError:
-        shutil.rmtree("_build")
-os.mkdir("_build")
+try:
+    os.mkdir("_build")
+except:
+    pass
 
 generated = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 generated = "This page was generated in " + generated
@@ -197,6 +195,7 @@ def generate_doc(src):
     body = body.replace("<table>", '<table class="table table-striped">')
     doc = string.Template(TEMPLATE_DOC).safe_substitute(
             title=title, body=body, toc=toc, date=generated)
+    doc = doc.replace("{{ path }}", src[:-3] + ".html")
     with open("_build/" + src[:-3] + ".html", "w") as f:
         f.write(doc)
 
