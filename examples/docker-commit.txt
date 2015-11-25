@@ -1,27 +1,23 @@
 required:
     explicit commit
-    unordered:
-        optional:
+    optional:
+        anyset:
             required:
                 exclusive:
                     explicit -a
                     explicit --author
                 implicit author
-        optional:
             required:
                 exclusive:
                     explicit -c
                     explicit --change
                 implicit changes
-        optional:
             explicit --help
-        optional:
             required:
                 exclusive:
                     explicit -m
                     explicit --message
                 implicit message
-        optional:
             exclusive:
                 explicit -p
                 explicit --pause
@@ -29,11 +25,13 @@ required:
     optional:
         implicit repository_tag
 
-Usage:  docker commit [OPTIONS] <container> [<repository>]
+Usage:  docker commit [{OPTIONS}] <container> [<repository>]
 
 Create a new image from a container's changes
-  (-a | --author) <author>    Author (e.g., "John Hannibal Smith <hannibal@a-team.com>")
-  (-c | --change) <changes>   Apply Dockerfile instruction to the created image
-  --help                      Print usage
-  (-m | --message) <message>  Commit message
-  (-p | --pause)              Pause container during commit
+
+Options:
+  -a, --author <author>    Author (e.g., "John Hannibal <hannibal@a-team.com>")
+  -c, --change <changes>   Apply Dockerfile instruction to the created image
+  --help                   Print usage
+  -m, --message <message>  Commit message
+  -p, --pause              Pause container during commit

@@ -7,7 +7,6 @@ from . import tools
 
 def __expand(key, body):
     key = key.lower()
-    #print "    expand:", key, "->", body
     if key == 'required':
         yield body
     elif key == 'optional':
@@ -15,30 +14,26 @@ def __expand(key, body):
         yield None
     elif key == 'exclusive':
         for bi in body:
-            #print "    bi:", bi
             yield [bi]
-    elif key == 'unordered':
-        n = len(body)
-        for idxs in itertools.permutations(range(n), n):
-            #yield [li for idx in idxs for li in body[idx]]
-            yield [body[idx] for idx in idxs]
+    elif key == 'anyset':
+        n = list(range(len(body)))
+        for k in n:
+            for idxs in itertools.permutations(n, k + 1):
+                yield [body[idx] for idx in idxs]
     else:
         exit("ERROR in SPEC: %s->%s" % (key, body))
 
 
-def process(root):
+def process(root, verbose=False):
     assert type(root) == list and len(root) == 2
-    root_node = [root]
-    queue = [root_node]
     leafs = []
     jdx = 0
+    queue = [(jdx, [root])]
     while queue:
-        node = queue.pop(-1)
-        #print(jdx, "node>", tools.lst_to_pattern(node))
-        jdx += 1
+        ldx, node = queue.pop(-1)
+        children = []
         hit = next((n for n in node if type(n[1]) == list), None)
         if hit == None:
-            #print("    leafed", node)
             leafs.append(node)
         else:
             idx = node.index(hit)
@@ -46,8 +41,14 @@ def process(root):
             end = node[idx + 1:]
             for n in __expand(*hit):
                 new = start + (n if n != None else []) + end
-                #print("    appending:", new)
-                queue.append(new)
+                jdx += 1
+                queue.append((jdx, new))
+                children.append(jdx)
+        if verbose:
+            head = "#%d %s:" % (ldx, "  leaf" if hit == None else "branch")
+            patt = tools.lst_to_pattern(node)
+            downrefs = ", children: " + ", ".join(str(s) for s in children)
+            print(head.rjust(15), patt + downrefs)
     return leafs
 
 

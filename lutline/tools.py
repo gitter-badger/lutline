@@ -4,7 +4,7 @@
 class Node:
 
     def __init__(self, key, child):
-        self.key = key
+        self.key = key.lower()
         self.child = child if type(child) == str else [Node(*n) for n in child]
 
     def __str__(self):
@@ -13,13 +13,13 @@ class Node:
         elif self.key == 'implicit':
             return "<%s>" % self.child
         elif self.key == 'optional':
-            return "[" + " ".join(str(c) for c in self.child) + "]"
+            return "[ " + " ".join(str(c) for c in self.child) + " ]"
         elif self.key == 'exclusive':
-            return "(" + " | ".join(str(c) for c in self.child) + ")"
+            return "( " + " | ".join(str(c) for c in self.child) + " )"
         elif self.key == 'required':
-            return "(" + " ".join(str(c) for c in self.child) + ")"
-        elif self.key == 'unordered':
-            return "{" + " ".join(str(c) for c in self.child) + "}"
+            return "( " + " ".join(str(c) for c in self.child) + " )"
+        elif self.key == 'anyset':
+            return "{ " + " ".join(str(c) for c in self.child) + " }"
 
 
 def lst_to_pattern(lst):
