@@ -7,9 +7,9 @@ Install *lutline* in your Python environment using [pip](http://pip.readthedocs.
 
 ## Generating a parser
 
-Start by creating a simple `specfile.txt`, where you describe your
-Command-Line Interface (CLI) specification, a usage message and a
-description of your CLI.
+Start by creating a file called `specfile.txt` (the filename can be
+anything), and describe your Command-Line Interface (CLI) specification, a
+usage message and a description.
 
     $ cat specfile.txt
     required:
@@ -34,8 +34,7 @@ You can find out more details about the above format in [this
 page](specfile.html). Basically, once *lutline* finds the first occurrence of
 `usage:` it simply copy/paste's the text following that marker, to the right
 locations in a template. The CLI specification that precedes that marker
-describes the pattern that you want to parse. As you can see, it is easy to
-draft and very versatile.
+describes the pattern that you want to parse.
 
 In this tutorial, a Python module will be generated based on that
 `specfile.txt`. The default output filename is `cli.py`, which is fine for
@@ -49,7 +48,8 @@ tool as follows (see its USAGE message for more information):
     cli.py  specfile.txt
 
 And now you have a CLI parser with a customized look-up table (LUT) that you
-can use in your application.
+can use in your application, without having to *recompile* your CLI
+everytime a user runs your application.
 
 ## Using the parser
 
@@ -97,13 +97,13 @@ If a virtual environment is used, detaching *lutline* is easy to achieve.
     (env)$ lutline spec.py
     (env)$ deactivate
     $ rm -r env
-    # "python main.py" or "python cli.py" still works fine ;)
+    # "python cli.py" still works fine ;)
 
 <br>
 
 If you want to found out more about the inner-problems solved by *lutline*,
 than following this link:
 
-* [Parsing a command-line](problem.html)
+* [Parsing a command-line](background.html)
 
 <br>
