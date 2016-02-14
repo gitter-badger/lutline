@@ -20,3 +20,6 @@ $ python -m unittest discover
 $ python setup.py sdist bdist_wheel
 $ twine upload dist/*
 ```
+
+
+[![Join the chat at https://gitter.im/ffunenga/lutline](https://badges.gitter.im/ffunenga/lutline.svg)](https://gitter.im/ffunenga/lutline?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
